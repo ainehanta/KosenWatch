@@ -8,8 +8,17 @@ int bakudan_main() {
 
   init_bakudan(&game);
   make_bakudan(&game);
-  disp_guide_message(game);
-  disp_bomb(game);
+
+  for(; game.player_num > 1;) {
+    int press_num = -1;
+    int i;
+    disp_guide_message(game);
+    for(i = 0; i < game.player_num; i++) {
+      disp_bomb(game);
+      scanf("%d", &press_num);
+      // スイッチを押す処理
+    }
+  }
 }
 
 void disp_bomb(bakudan game) {
