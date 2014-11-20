@@ -10,6 +10,10 @@ int bakudan_main() {
   make_bakudan(&game);
 }
 
+int disp_guide_message(bakudan* game) {
+  puts("Please input bomb_num of you want to press.\n");
+}
+
 int init_bakudan(bakudan* game) {
   game->player_num = DEFAULT_PLAYER_NUM;
 }
