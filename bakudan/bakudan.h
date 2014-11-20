@@ -1,6 +1,10 @@
 #ifndef INCLUDED_BAKUDAN_H
 #define INCLUDED_BAKUDAN_H
 #define DEFAULT_PLAYER_NUM 3
+#define NOTHING -1
+#define NOT_PRESSED 0
+#define PRESSED 1
+#define EXPLODED 2
 
 typedef struct bakudan {
   int bomb_loc;
