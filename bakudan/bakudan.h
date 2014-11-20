@@ -3,9 +3,10 @@
 #define DEFAULT_PLAYER_NUM 3
 
 typedef struct bakudan {
-  int player_num;
   int bomb_loc;
+  int bomb_status[DEFAULT_PLAYER_NUM];
   int order[DEFAULT_PLAYER_NUM];
+  int player_num;
 } bakudan;
 
 int bakudan_main();
