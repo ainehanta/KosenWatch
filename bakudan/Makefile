@@ -1,6 +1,6 @@
 TARGET  = a.out
 SRCS    = $(wildcard *.c)
-OBJS    = $(SRCS:.cpp=.o)
+OBJS    = $(SRCS:.c=.o)
 
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $^

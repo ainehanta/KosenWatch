@@ -15,5 +15,5 @@ int init_bakudan(bakudan* game) {
 }
 
 int make_bakudan(bakudan* game) {
-  game->bomb_loc = rand() % game->player_num:
+  game->bomb_loc = rand() % game->player_num;
 }
