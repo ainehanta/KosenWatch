@@ -14,10 +14,10 @@ typedef struct bakudan {
 } bakudan;
 
 int bakudan_main();
-int disp_bomb(bakudan game);
-int disp_guide_message(bakudan game);
-int init_bakudan(bakudan* game);
-int make_bakudan(bakudan* game);
+void disp_bomb(bakudan game);
+void disp_guide_message(bakudan game);
+void init_bakudan(bakudan* game);
+void make_bakudan(bakudan* game);
 
 #endif
 

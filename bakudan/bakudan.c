@@ -12,7 +12,7 @@ int bakudan_main() {
   disp_bomb(game);
 }
 
-int disp_bomb(bakudan game) {
+void disp_bomb(bakudan game) {
   int i;
 
   for(i = 0; i < game.player_num + 1; i++)
@@ -20,15 +20,15 @@ int disp_bomb(bakudan game) {
   puts("");
 }
 
-int disp_guide_message(bakudan game) {
+void disp_guide_message(bakudan game) {
   puts("Please input bomb_num of you want to press.");
 }
 
-int init_bakudan(bakudan* game) {
+void init_bakudan(bakudan* game) {
   game->player_num = DEFAULT_PLAYER_NUM;
 }
 
-int make_bakudan(bakudan* game) {
+void make_bakudan(bakudan* game) {
   int i;
 
   game->bomb_loc = rand() % game->player_num;
