@@ -14,7 +14,7 @@ int disp_bomb(bakudan* game) {
 }
 
 int disp_guide_message(bakudan* game) {
-  puts("Please input bomb_num of you want to press.\n");
+  puts("Please input bomb_num of you want to press.");
 }
 
 int init_bakudan(bakudan* game) {
