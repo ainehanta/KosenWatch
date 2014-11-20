@@ -5,6 +5,7 @@
 typedef struct bakudan {
   int player_num;
   int bomb_loc;
+  int order[DEFAULT_PLAYER_NUM];
 } bakudan;
 
 int bakudan_main();
