@@ -15,8 +15,16 @@ int bakudan_main() {
 void disp_bomb(bakudan game) {
   int i;
 
-  for(i = 0; i < game.player_num + 1; i++)
-    printf("%2d", game.bomb_status[i]);
+  for(i = 0; i < game.player_num + 1; i++) {
+    switch(game.bomb_status[i]) {
+    case NOT_PRESSED:
+      printf("ÆÌ");
+      break;
+    case PRESSED:
+      printf("±ú");
+      break;
+    }
+  }
   puts("");
 }
 
@@ -33,7 +41,7 @@ void make_bakudan(bakudan* game) {
 
   game->bomb_loc = rand() % game->player_num;
 
-  // ã‚¹ã‚¤ãƒƒãƒã‚’æŠ¼ã™é †ç•ªã®åˆæœŸåŒ–
+  // ¥¹¥¤¥Ã¥Á¤ò²¡¤¹½çÈÖ¤Î½é´ü²½
   for(i = 0; i < game->player_num; i++)
     game->order[i] = i;
   for(i = 0; i < game->player_num; i++) {
@@ -44,7 +52,7 @@ void make_bakudan(bakudan* game) {
     game->order[i] = temp;
   }
 
-  // çˆ†å¼¾ã®çŠ¶æ…‹ã®åˆæœŸåŒ–
+  // ÇúÃÆ¤Î¾õÂÖ¤Î½é´ü²½
   for(i = 0; i < game->player_num+1; i++)
     game->bomb_status[i] = NOT_PRESSED;
 }
