@@ -8,19 +8,19 @@ int bakudan_main() {
 
   init_bakudan(&game);
   make_bakudan(&game);
-  disp_guide_message(&game);
-  disp_bomb(&game);
+  disp_guide_message(game);
+  disp_bomb(game);
 }
 
-int disp_bomb(bakudan* game) {
+int disp_bomb(bakudan game) {
   int i;
 
-  for(i = 0; i < game->player_num + 1; i++)
-    printf("%2d", game->bomb_status[i]);
+  for(i = 0; i < game.player_num + 1; i++)
+    printf("%2d", game.bomb_status[i]);
   puts("");
 }
 
-int disp_guide_message(bakudan* game) {
+int disp_guide_message(bakudan game) {
   puts("Please input bomb_num of you want to press.");
 }
 
