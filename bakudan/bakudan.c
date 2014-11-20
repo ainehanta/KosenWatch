@@ -55,4 +55,9 @@ void make_bakudan(bakudan* game) {
   // 爆弾の状態の初期化
   for(i = 0; i < game->player_num+1; i++)
     game->bomb_status[i] = NOT_PRESSED;
+
+  // 脱落者の初期化
+  for(i = 0; i < game->player_num-1; i++) {
+    game->dropout[i] = -1;
+  }
 }
