@@ -27,7 +27,8 @@ int make_bakudan(bakudan* game) {
   game->bomb_loc = rand() % game->player_num;
 
   // スイッチを押す順番の初期化
-  for(i = 0; i < game->player_num; i++) game->order[i] = i;
+  for(i = 0; i < game->player_num; i++)
+    game->order[i] = i;
   for(i = 0; i < game->player_num; i++) {
     int temp;
     int random = rand() % game->player_num;
@@ -35,4 +36,8 @@ int make_bakudan(bakudan* game) {
     game->order[random] = game->order[i];
     game->order[i] = temp;
   }
+
+  // 爆弾の状態の初期化
+  for(i = 0; i < game->player_num+1; i++)
+    game->bomb_status[i] = NOT_PRESSED;
 }
