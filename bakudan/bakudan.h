@@ -19,6 +19,7 @@ void disp_bomb(bakudan game);
 void disp_guide_message(bakudan game);
 void init_bakudan(bakudan* game);
 void make_bakudan(bakudan* game);
+int press_switch(bakudan* game, int loc);
 
 #endif
 

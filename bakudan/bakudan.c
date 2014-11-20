@@ -70,3 +70,14 @@ void make_bakudan(bakudan* game) {
     game->dropout[i] = -1;
   }
 }
+
+int press_switch(bakudan* game, int loc) {
+  if(game->bomb_loc == loc) {
+    game->bomb_status[loc] = EXPLODED;
+    return 1;
+  } else {
+    game->bomb_status[loc] = PRESSED;
+    return 0;
+  }
+  return 0;
+}
