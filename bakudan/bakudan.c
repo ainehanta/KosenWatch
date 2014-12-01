@@ -7,16 +7,22 @@ int bakudan_main() {
   bakudan game;
 
   init_bakudan(&game);
-  make_bakudan(&game);
 
   for(; game.player_num > 1;) {
     int press_num = -1;
     int i;
-    disp_guide_message(game);
+    make_bakudan(&game);
     for(i = 0; i < game.player_num; i++) {
+      disp_guide_message(game);
       disp_bomb(game);
       scanf("%d", &press_num);
       // スイッチを押す処理
+      if(press_switch(&game, press_num)) {
+        puts("bang!!!!!!!!!!!!!!!!!");
+        game.dropout[press_num] = 1;
+        game.player_num--;
+        break;
+      }
     }
   }
 }
@@ -24,6 +30,7 @@ int bakudan_main() {
 void disp_bomb(bakudan game) {
   int i;
 
+  printf("");
   for(i = 0; i < game.player_num + 1; i++) {
     switch(game.bomb_status[i]) {
     case NOT_PRESSED:
@@ -38,7 +45,7 @@ void disp_bomb(bakudan game) {
 }
 
 void disp_guide_message(bakudan game) {
-  puts("Please input bomb_num of you want to press.");
+  printf("Please input bomb_num of you want to press.\n");
 }
 
 void init_bakudan(bakudan* game) {
