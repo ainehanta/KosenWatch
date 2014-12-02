@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+// メインループ
 int bakudan_main() {
   bakudan game;
 
@@ -27,6 +28,7 @@ int bakudan_main() {
   disp_winner(game);
 }
 
+// 全部の爆弾を表示
 void disp_bomb(bakudan game) {
   int i;
 
@@ -44,15 +46,18 @@ void disp_bomb(bakudan game) {
   puts("");
 }
 
+// 操作説明などのガイド表示
 void disp_guide_message(bakudan game, int order) {
   printf("Please input bomb_num of you want to press.\n");
   printf("player number is %d\n", game.order[order]);
 }
 
+// 勝者表示
 void disp_winner(bakudan game) {
   printf("Winner is Player%d", game.order[0]);
 }
 
+// 脱落者追加
 int drop_out(bakudan* game, int press_num) {
   puts("Bang!!!!!!!!!!!!!!!!!");
   printf("Player%d is dropped out.\n", game->order[press_num]);
@@ -60,10 +65,12 @@ int drop_out(bakudan* game, int press_num) {
   game->player_num--;
 }
 
+// 爆弾ゲームを初期化
 void init_bakudan(bakudan* game) {
   game->player_num = DEFAULT_PLAYER_NUM;
 }
 
+// 押すスイッチの場所を入力
 int input_data(bakudan game) {
   int data;
 
@@ -77,6 +84,7 @@ int input_data(bakudan game) {
   return data;
 }
 
+// 爆弾を初期化
 void make_bakudan(bakudan* game) {
   int i;
 
@@ -103,6 +111,7 @@ void make_bakudan(bakudan* game) {
   }
 }
 
+// スイッチを押す処理
 int press_switch(bakudan* game, int loc) {
   if(game->bomb_loc == loc) {
     game->bomb_status[loc] = EXPLODED;
