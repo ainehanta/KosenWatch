@@ -19,12 +19,15 @@ int bakudan_main() {
       press_num = input_data(game);
       // スイッチを押す処理
       if(press_switch(&game, press_num)) {
-        drop_out(&game, press_num);
+        drop_out(&game, i);
         break;
       }
     }
   }
+
+  // 勝者をorder配列の最初の要素に移動する
   make_bakudan(&game);
+
   disp_winner(game);
 }
 
@@ -58,10 +61,10 @@ void disp_winner(bakudan game) {
 }
 
 // 脱落者追加
-int drop_out(bakudan* game, int press_num) {
+int drop_out(bakudan* game, int order) {
   puts("Bang!!!!!!!!!!!!!!!!!");
-  printf("Player%d is dropped out.\n", game->order[press_num]);
-  game->dropout[press_num] = DROP_OUT;
+  printf("Player%d is dropped out.\n", game->order[order]);
+  game->dropout[game->order[order]] = DROP_OUT;
   game->player_num--;
 }
 
@@ -94,11 +97,11 @@ void make_bakudan(bakudan* game) {
   for(i = 0; i < game->player_num; i++)
     game->order[i] = i;
   for(i = 0; i < game->player_num; i++) {
-    int temp;
+    int tmp;
     int random = rand() % game->player_num;
-    temp = game->order[random];
+    tmp = game->order[random];
     game->order[random] = game->order[i];
-    game->order[i] = temp;
+    game->order[i] = tmp;
   }
 
   // 爆弾の状態の初期化
