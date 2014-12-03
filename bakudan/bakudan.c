@@ -57,7 +57,7 @@ void disp_guide_message(bakudan game, int order) {
 
 // 勝者表示
 void disp_winner(bakudan game) {
-  printf("Winner is Player%d", game.order[0]);
+  printf("Winner is Player%d\n", game.order[0]);
 }
 
 // 脱落者追加
