@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 // メインループ
 int bakudan_main() {
   bakudan game;
