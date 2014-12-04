@@ -2,5 +2,5 @@
 
 int main(void)
 {
-  printf("KosenWatch\n");
+  printf("KosenWatch!\n");
 }
