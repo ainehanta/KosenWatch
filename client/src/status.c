@@ -1,6 +1,1 @@
-#include <stdio.h>
-
-int main(void)
-{
-  printf("Hello\n");
-}
+#include "status.h"
