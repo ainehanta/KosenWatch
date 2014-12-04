@@ -1,3 +1,4 @@
+// status¹½Â¤ÂÎ
 #ifndef INCLUDED_STATUS
 #define INCLUDED_STATUS
 #define MAX_NAME_LENGTH
@@ -8,5 +9,8 @@ struct status {
   int turn;
   char name[MAX_NAME_LENGTH];
 };
+
+int input_data(const char* filename);
+int output_data(const char* filename);
 
 #endif
