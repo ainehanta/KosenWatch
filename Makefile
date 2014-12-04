@@ -7,10 +7,10 @@ CC = gcc
 all : $(TARGET)
 
 $(TARGET) : $(OBJS)
-$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
 .c.o :
-$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $<
 
 clean :
-rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(TARGET)
