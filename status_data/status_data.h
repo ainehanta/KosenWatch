@@ -1,0 +1,4 @@
+#ifndef INCLUDED_STATUS_DATA
+#define INCLUDED_STATUS_DATA
+
+#endif
