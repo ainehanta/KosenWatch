@@ -21,7 +21,7 @@ void disp_guide_message(bakudan game, int order);
 void disp_winner(bakudan game);
 int drop_out(bakudan* game, int order);
 void init_bakudan(bakudan* game);
-int input_data(bakudan game);
+int input_data(bakudan game, int player);
 void make_bakudan(bakudan* game);
 int press_switch(bakudan* game, int loc);
 

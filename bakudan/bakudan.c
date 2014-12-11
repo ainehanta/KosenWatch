@@ -17,7 +17,7 @@ int bakudan_main() {
     for(i = 0; i < game.player_num; i++) {
       disp_guide_message(game, i);
       disp_bomb(game);
-      press_num = input_data(game);
+      press_num = input_data(game, game.order[i]);
       // スイッチを押す処理
       if(press_switch(&game, press_num)) {
         drop_out(&game, i);
@@ -75,7 +75,7 @@ void init_bakudan(bakudan* game) {
 }
 
 // 押すスイッチの場所を入力
-int input_data(bakudan game) {
+int input_data(bakudan game, int player) {
   int data;
 
   do {
