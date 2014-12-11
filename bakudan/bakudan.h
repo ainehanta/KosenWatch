@@ -16,8 +16,10 @@ typedef struct bakudan {
 } bakudan;
 
 int bakudan_main();
+int check_input(bakudan game, int input);
 void disp_bomb(bakudan game);
 void disp_guide_message(bakudan game, int order);
+void disp_input_guide(bakudan game);
 void disp_winner(bakudan game);
 int drop_out(bakudan* game, int order);
 void init_bakudan(bakudan* game);

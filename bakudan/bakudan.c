@@ -56,6 +56,19 @@ void disp_guide_message(bakudan game, int order) {
   printf("player number is %d\n", game.order[order]);
 }
 
+// 入力する時のガイド表示
+void disp_input_guide(bakudan game) {
+  int i;
+  printf("input \n");
+
+  for(i = 0; i < game.player_num + 1; i++) {
+    if(game.bomb_status[i] == NOT_PRESSED) {
+      printf("%d ", i);
+    }
+  }
+  puts("");
+}
+
 // 勝者表示
 void disp_winner(bakudan game) {
   printf("Winner is Player%d\n", game.order[0]);
@@ -77,15 +90,30 @@ void init_bakudan(bakudan* game) {
 // 押すスイッチの場所を入力
 int input_data(bakudan game, int player) {
   int data;
+  int input_check;
 
   do {
-    printf("input 0 ~ %d\n", game.player_num);
-    scanf(" %c", &data);
-  } while(!(data >= '0' && data <= game.player_num + '0'));
+    disp_input_guide(game);
+    data = getchar();
+    getchar();
+    input_check = check_input(game, data - '0');
+  } while(input_check);
 
   data -= '0';
 
   return data;
+}
+
+int check_input(bakudan game, int input) {
+  int i;
+
+  if(input < 0 || input > game.player_num)
+    return 1;
+
+  if(game.bomb_status[input] != NOT_PRESSED)
+    return 1;
+
+  return 0;
 }
 
 // 爆弾を初期化
