@@ -12,6 +12,6 @@ typedef struct status {
 
 int delete_nl(char *str);
 int input_data(const char* filename, status* data);
-int output_data(const char* filename);
+int output_data(const char* filename, status data);
 
 #endif
