@@ -59,12 +59,11 @@ void disp_guide_message(bakudan game, int order) {
 // 入力する時のガイド表示
 void disp_input_guide(bakudan game) {
   int i;
-  printf("input \n");
+  printf("input ");
 
   for(i = 0; i < game.player_num + 1; i++) {
-    if(game.bomb_status[i] == NOT_PRESSED) {
+    if(game.bomb_status[i] == NOT_PRESSED)
       printf("%d ", i);
-    }
   }
   puts("");
 }
