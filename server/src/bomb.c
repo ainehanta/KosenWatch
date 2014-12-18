@@ -86,15 +86,16 @@ void init_bakudan(bakudan* game) {
   game->player_num = DEFAULT_PLAYER_NUM;
 }
 
-// 押すスイッチの場所を入力
+// 押すスイッチの場所をクライアントからもらう
 int input_data(bakudan game, int player) {
   int data;
   int input_check;
 
   do {
-    disp_input_guide(game);
-    data = getchar();
-    getchar();
+    // 入力許可の信号をクライアントに送る
+    // send_allow_input(player);
+    // 入力をクライアントからもらう
+    // data = get_input();
     input_check = check_input(game, data - '0');
   } while(input_check);
 
