@@ -10,4 +10,8 @@ typedef struct status {
   char name[MAX_NAME_LENGTH];
 } status;
 
+int delete_nl(char *str);
+int input_data(const char* filename, status* data);
+int output_data(const char* filename, status data);
+
 #endif
