@@ -5,22 +5,20 @@
 #include <stdlib.h>
 #include <time.h>
 
-int num;
-
 int main()
 {
-  struct parameter player[4];
+  status player;
   int action=0;
 
-  setting(player);
+  setting(&player);
 
   while(1){
-    printf("num=%d\n",num);
+    printf("sinka=%d\n",player->sinka);
     print_menu(player,&action);
     if(action==0 || action==1){
-      player[0].turn++;
+      player.turn++;
       first_judge(player);
-      if(player[0].turn>11){
+      if(player.turn>11){
         final_judge(player);
         break;
       }
@@ -29,64 +27,50 @@ int main()
   return 0;
 }
 
-void setting(struct parameter player[])
+void setting(status *player)
 {
 
-  player[0].inteli = 40;
-  player[0].health = 80;
-  player[0].turn = 0;
-
-  num = 0;
+  player->inteli = 40;
+  player->health = 80;
+  player->turn = 0;
+  player->sinka = 0;
 
   printf("What is your name?\n");
-  scanf("%s",player[0].name);
+  scanf("%s",player->name);
 
 }
 
-void first_judge(struct parameter player[])
+void first_judge(status *player)
 {
   srand((unsigned)time(NULL));
 
   int val = rand()%2;
 
-  if(player[0].turn==6){
+  if(player->turn==6){
 
-    if(player[0].inteli<player[0].health){
-      num = 1;
-      player[1].inteli = player[0].inteli;
-      player[1].health = player[0].health;
-
+    if(player->inteli<player->health){
+      player->sinka = 1;
       printf("進化しました！\n");
-
-
-    } else if(player[0].inteli>player[0].health){
-      num = 2;
-      player[2].inteli = player[0].inteli;
-      player[2].health = player[0].health;
-
+    } else if(player->inteli>player->health){
+      player->sinka = 2;
       printf("進化しました！\n");
-
-    } else if(player[0].inteli==player[0].health){
+    } else if(player->inteli==player->health){
       if(val==0){
-        num = 1;
-        player[1].inteli = player[0].inteli;
-        player[1].health = player[0].health;
+        player->shinka = 1;
         printf("進化しました！\n");
       }else if(val==1){
-        num = 2;
-        player[2].inteli = player[0].inteli;
-        player[2].health = player[0].health;
+        player->sinka = 2;
         printf("進化しました！\n");
       }
     }
   }
 }
 
-void final_judge(struct parameter player[])
+void final_judge(status *player)
 {
-  if(player[0].turn>11){
+  if(player->turn>11){
 
-    if(player[1].inteli<60 && player[1].health<60){
+    if(player->sinka == 1 && player->inteli<60 && player->health<60){
       printf("NHK(ニート・ヒッキー・警備員)END\n");
 
       printf(" ／⌒ヽ\n");
@@ -94,14 +78,14 @@ void final_judge(struct parameter player[])
       printf(" | 3 (∪‾]\n");
       printf("く、・  (∩‾]\n");
       printf("-------------\n");
-    }else if(player[2].inteli<60 && player[2].health<60){
+    }else if(player->sinka == 2 && player->inteli<60 && player->health<60){
       printf("NHK(ニート・ヒッキー・警備員)END\n");
       printf(" ／⌒ヽ\n");
       printf("く/・   ⌒ヽ\n");
       printf(" | 3 (∪‾]\n");
       printf("く、・  (∩‾]\n");
       printf("-------------\n");
-    }else if(player[1].inteli<60 && player[1].health>=60){
+    }else if(player->sinka == 1 && player->inteli<60 && player->health>=60){
       printf("アイツ，良いやつだったんだけどなEND\n");
       printf("　 | l|　ｌ || || l|\n");
       printf(" 　 | l|　| || || ｌ!\n");
@@ -111,7 +95,7 @@ void final_judge(struct parameter player[])
       printf(" 　　 (　　　 ）\n");
       printf(" 　　 と　 　 i\n");
       printf(" 　　　 しーJ\n");
-    }else if(player[2].inteli>=60 && player[0].health<60){
+    }else if(player->sinka == 2 && player->inteli>=60 && player->health<60){
       printf("あ，アイツ同窓会誘うの忘れてたEND\n");
       printf("      ハ,,ハ\n");
       printf("    （ ゜ω゜ ) お断りします\n");
@@ -120,7 +104,7 @@ void final_judge(struct parameter player[])
       printf("    （＿⌒ヽ\n");
       printf("     ヽ ヘ  }\n");
       printf("ε≡Ξ ノノ ｀J\n");
-    }else if(player[2].inteli>=60 && player[2].health>=60 && player[2].inteli<80 && player[2].health<80){
+    }else if(player->sinka == 2 && player->inteli>=60 && player->health>=60 && player->inteli<80 && player->health<80){
       printf("大学進学おめでとうEND\n");
       printf("          ∧__∧\n");
       printf("        （｀・ω・）\n");
@@ -128,14 +112,14 @@ void final_judge(struct parameter player[])
       printf("      ヽ,,ノ==l ノ\n");
       printf("          / l |\n");
       printf("／／／／／／／／／／／／\n");
-    }else if(player[1].inteli>=60 && player[1].health>=60 && player[1].inteli<80 && player[1].health<80){
+    }else if(player->sinka == 1 && player->inteli>=60 && player->health>=60 && player->inteli<80 && player->health<80){
       printf("就職決まっておめでとうEND\n");
       printf("　　　　　∧__∧∧∧∧∧∧\n");
       printf("　　　　 (・ω・` )┐┐┐┐┐┐\n");
       printf("　　　　　と´_,ノ゛ヾ.ヾヾ.ヾヾ.ヾヾ.ヾ\n");
       printf("　　　　 　 (´ ヽ、 ＼＼＼＼＼＼＼\n");
       printf("　　　 　 　 ｀ー'　＼__）__）__）_）__）_）__） \n");
-    }else if(player[1].inteli>=80 && player[1].health>=80){
+    }else if(player->sinka == 1 && (player->inteli>=80 || player->health>=80)){
       printf("一時期は荒れて留年したが今では立派なベンチャー企業の社長END\n");
       printf("　　　　　　　　*'``・* 。\n");
       printf("　　　　　　　　|　　　　 `*。\n");
@@ -145,7 +129,7 @@ void final_judge(struct parameter player[])
       printf("　　　　　　　`・+。*・' ゜⊃ +゜\n");
       printf("　　　　　　　☆　　 ∪~ 。*゜\n");
       printf("　 　　　　　　`・+。*・ ゜\n");
-    }else if(player[2].inteli>=80 || player[2].health>=80){
+    }else if(player-sinka == 2 && (player->inteli>=80 || player->health>=80)){
       printf("一時期は荒れて留年したが今では立派なベンチャー企業の社長END\n");
       printf("　　　　　　　　*'``・* 。\n");
       printf("　　　　　　　　|　　　　 `*。\n");
@@ -159,11 +143,11 @@ void final_judge(struct parameter player[])
   }
 }
 
-void print_menu(struct parameter player[],int *action)
+void print_menu(status *player, int *action)
 {
   int month;
 
-  month = player[0].turn+4;
+  month = player->turn+4;
   if(month>12){
     month = month-12;
   }
@@ -171,10 +155,10 @@ void print_menu(struct parameter player[],int *action)
   printf("\n");
   printf("%d月\n",month);
   printf("\n");
-  printf("your name: %s\n",player[0].name);
-  printf("your parameter: inteli %d  health %d\n",player[num].inteli,player[num].health);
+  printf("your name: %s\n",player->name);
+  printf("your parameter: inteli %d  health %d sinka %d\n", player->inteli, player->health, player->sinka);
 
-  if(num==0){
+  if(player->sinka == 0){
     printf("your title: [留年生]\n");
     printf("status:\n");
     printf("        ∧∧\n");
@@ -182,7 +166,7 @@ void print_menu(struct parameter player[],int *action)
     printf("   ＼(.＼ ノ\n");
     printf(")、ハ,,、\n");
 
-  }else if(num==1){
+  }else if(player->sinka == 1){
     printf("your title: [ストロング高専生]\n");
     printf("status:\n");
     printf(" ∧＿∧\n");
@@ -191,7 +175,7 @@ void print_menu(struct parameter player[],int *action)
     printf("/ ) ババババ\n");
     printf("( /‾∪\n");
 
-  }else if(num==2){
+  }else if(player->sinka == 2){
     printf("your title: [インテリ高専生]\n");
     printf("status:\n");
     printf(" 〃∩ ∧＿∧\n");

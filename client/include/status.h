@@ -8,6 +8,7 @@ typedef struct status {
   int intelli;
   int turn;
   char name[MAX_NAME_LENGTH];
+  int sinka;
 } status;
 
 #endif

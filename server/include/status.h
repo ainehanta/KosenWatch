@@ -1,4 +1,4 @@
-// status¹½Â¤ÂÎ
+// statusæ§‹é€ ä½“
 #ifndef INCLUDED_STATUS
 #define INCLUDED_STATUS
 #define MAX_NAME_LENGTH 10
@@ -8,6 +8,7 @@ typedef struct status {
   int intelli;
   int turn;
   char name[MAX_NAME_LENGTH];
+  int sinka;
 } status;
 
 int delete_nl(char *str);

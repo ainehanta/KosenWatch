@@ -1,4 +1,4 @@
-// status¹½Â¤ÂÎ
+// statusæ§‹é€ ä½“
 #include "status.h"
 #include <string.h>
 #include <stdio.h>
@@ -58,6 +58,14 @@ int input_data(const char* filename, status* data) {
     data->turn = atoi(ch);
   }
 
+  // sinka
+  if(fgets(ch, MAX_NAME_LENGTH, fp) == NULL) {
+    printf("[Error] : file reading error.\n");
+    return 1;
+  } else {
+    data->sinka = atoi(ch);
+  }
+
   return 0;
 }
 
@@ -87,6 +95,9 @@ int output_data(const char* filename, status data) {
   fputs(str, fp);
   fputc('\n', fp);
   itoa(data.turn, str);
+  fputs(str, fp);
+  fputc('\n', fp);
+  itoa(data.sinka, str);
   fputs(str, fp);
   fputc('\n', fp);
 
