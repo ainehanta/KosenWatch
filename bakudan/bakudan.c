@@ -7,6 +7,7 @@
 // メインループ
 int bakudan_main() {
   bakudan game;
+  int press[DEFAULT_PLAYER_NUM];
 
   init_bakudan(&game);
 
@@ -17,11 +18,16 @@ int bakudan_main() {
     for(i = 0; i < game.player_num; i++) {
       disp_guide_message(game, i);
       disp_bomb(game);
-      press_num = input_data(game, game.order[i]);
+      press[i] = input_data(game, game.order[i]);
+      press_switch(&game, press[i]);
+    }
+    int player_num = game.player_num;
+    for(i = 0; i < player_num; i++) {
       // スイッチを押す処理
-      if(press_switch(&game, press_num)) {
+      if(explode_bomb(&game, press[i])) {
         drop_out(&game, i);
-        break;
+      } else {
+        disp_safe(game, i);
       }
     }
   }
@@ -68,6 +74,10 @@ void disp_input_guide(bakudan game) {
   puts("");
 }
 
+void disp_safe(bakudan game, int order) {
+  printf("Player%d is safe!\n", game.order[order]);
+}
+
 // 勝者表示
 void disp_winner(bakudan game) {
   printf("Winner is Player%d\n", game.order[0]);
@@ -79,6 +89,14 @@ int drop_out(bakudan* game, int order) {
   printf("Player%d is dropped out.\n", game->order[order]);
   game->dropout[game->order[order]] = DROP_OUT;
   game->player_num--;
+}
+
+int explode_bomb(bakudan* game, int loc) {
+  if(game->bomb_loc == loc) {
+    game->bomb_status[loc] = EXPLODED;
+    return 1;
+  }
+  return 0;
 }
 
 // 爆弾ゲームを初期化
@@ -144,12 +162,6 @@ void make_bakudan(bakudan* game) {
 
 // スイッチを押す処理
 int press_switch(bakudan* game, int loc) {
-  if(game->bomb_loc == loc) {
-    game->bomb_status[loc] = EXPLODED;
-    return 1;
-  } else {
-    game->bomb_status[loc] = PRESSED;
-    return 0;
-  }
+  game->bomb_status[loc] = PRESSED;
   return 0;
 }
