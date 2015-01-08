@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int num;
 
@@ -39,8 +40,9 @@ int main()
 
 void setting(struct parameter player[])
 {
-  player[0].inteli = 65;
-  player[0].health = 60;
+ 
+  player[0].inteli = 40;
+  player[0].health = 80;
   player[0].turn = 0;
 
   num = 0;
@@ -52,6 +54,9 @@ void setting(struct parameter player[])
 
 void first_judge(struct parameter player[])
 {
+  srand((unsigned)time(NULL));
+  
+  int val = rand()%2;
 
   if(player[0].turn==6){
 
@@ -70,6 +75,18 @@ void first_judge(struct parameter player[])
 
       printf("進化しました！\n");
    
+    } else if(player[0].inteli==player[0].health){
+      if(val==0){
+	num = 1;
+	player[1].inteli = player[0].inteli;
+	player[1].health = player[0].health;
+	printf("進化しました！\n");
+      }else if(val==1){
+	num = 2;
+	player[2].inteli = player[0].inteli;
+	player[2].health = player[0].health;
+	printf("進化しました！\n");
+      }
     }
   }
 }
@@ -79,7 +96,7 @@ void final_judge(struct parameter player[])
   if(player[0].turn>11){
 
     if(player[1].inteli<60 && player[1].health<60){
-      printf("NHK(ニート・ヒッキー・？？？)END\n");
+      printf("NHK(ニート・ヒッキー・警備員)END\n");
  
       printf(" ／⌒ヽ\n");
       printf("く/･   ⌒ヽ\n");
@@ -87,15 +104,22 @@ void final_judge(struct parameter player[])
       printf("く､･  (∩￣]\n");
       printf("-------------\n");
     }else if(player[2].inteli<60 && player[2].health<60){
-      printf("NHK(ニート・ヒッキー・？？？)END\n");
+      printf("NHK(ニート・ヒッキー・警備員)END\n");
       printf(" ／⌒ヽ\n");
       printf("く/･   ⌒ヽ\n");
       printf(" | 3 (∪￣]\n");
       printf("く､･  (∩￣]\n");
       printf("-------------\n");
-    }else if(player[1].inteli<60 && player[1].health>60){
+    }else if(player[1].inteli<60 && player[1].health>=60){
       printf("アイツ，良いやつだったんだけどなEND\n");
-
+      printf("　 | l|　ｌ || || l|\n");
+      printf(" 　 | l|　| || || ｌ!\n");
+      printf(" 　　　l 　 ｌ| .|　　　 ☆\n");
+      printf(" 　　＿＿＿＿　／\n");
+      printf(" 　 ゝ＿＿＿ノ　がーん！\n");
+      printf(" 　　 (　　　 ）\n");
+      printf(" 　　 と　 　 i\n");
+      printf(" 　　　 しーJ\n");
     }else if(player[2].inteli>=60 && player[0].health<60){
       printf("あ，アイツ同窓会誘うの忘れてたEND\n");
       printf("      ﾊ,,ﾊ\n");
@@ -130,7 +154,7 @@ void final_judge(struct parameter player[])
       printf("　　　　　　　`・+｡*・' ﾟ⊃ +ﾟ\n");
       printf("　　　　　　　☆　　 ∪~ ｡*ﾟ\n");
       printf("　 　　　　　　`・+｡*・ ﾟ\n");
-    }else if(player[2].inteli>=80 && player[2].health>=80){
+    }else if(player[2].inteli>=80 || player[2].health>=80){
       printf("一時期は荒れて留年したが今では立派なベンチャー企業の社長END\n");
       printf("　　　　　　　　*'``・* 。\n");
       printf("　　　　　　　　|　　　　 `*。\n");
