@@ -6,43 +6,37 @@
 // メインループ
 int bakudan_main() {
   bakudan game;
+  int press[DEFAULT_PLAYER_NUM];
 
   init_bakudan(&game);
 
-  for(; !is_game_finished();) {
-    int press_num = -1;
-    int now_player;
+  for(; game.player_num > 1;) {
+    int player_num = game.player_num;
+    int i;
     make_bakudan(&game);
-    do {
-      int game_status;
-      now_player = get_now_order();
-      // 自分のターンの時
-      if(now_player == bakudan.my_num){
-        disp_guide_message(game, i);
-        disp_bomb(game);
-        // スイッチを押す場所入力
-        do {
-          press_num = input_data(game, game.order[i]);
-        } while(send_input(press_num));
-        check_result(&bakudan);
+    // スイッチを押すための入力
+    for(i = 0; i < game.player_num; i++) {
+      disp_guide_message(game, i);
+      disp_bomb(game);
+      press[i] = input_data(game, game.order[i]);
+      press_switch(&game, press[i]);
+    }
+    // 爆破
+    for(i = 0; i < player_num; i++) {
+      // スイッチを押す処理
+      if(explode_bomb(&game, press[i])) {
+        drop_out(&game, i);
       } else {
-        check_result(&bakudan);
+        disp_safe(game, i);
       }
-    } while(/*爆弾ゲームの1回が終わってなかったら*/);
+    }
   }
 
-  // 勝者表示
-  disp_winner(get_winner());
-}
+  // 勝者をorder配列の最初の要素に移動する
+  make_bakudan(&game);
+  disp_winner(game);
 
-int check_result(bakudan* game, int now_player) {
-  game_status = get_bakudan_status();
-  if(game_status == DROP_OUT) {
-    drop_out(&game, get_dropout());
-  } else {
-    // セーフと表示
-    // now_playerを使って、bomb_statusを書き換え
-  }
+  return game.order[0];
 }
 
 // 全部の爆弾を表示
@@ -63,13 +57,8 @@ void disp_bomb(bakudan game) {
   puts("");
 }
 
-void disp_game(bakudan game, int player) {
-  printf("Player%d's turn!");
-}
-
 // 操作説明などのガイド表示
 void disp_guide_message(bakudan game, int order) {
-  printf("Your turn!!");
   printf("Please input bomb_num of you want to press.\n");
   printf("player number is %d\n", game.order[order]);
 }
@@ -86,30 +75,30 @@ void disp_input_guide(bakudan game) {
   puts("");
 }
 
+// 脱落じゃない時の表示
+void disp_safe(bakudan game, int order) {
+  printf("Player%d is safe!\n", game.order[order]);
+}
+
 // 勝者表示
 void disp_winner(bakudan game) {
   printf("Winner is Player%d\n", game.order[0]);
 }
 
 // 脱落者追加
-int drop_out(bakudan* game, int player) {
+int drop_out(bakudan* game, int order) {
   puts("Bang!!!!!!!!!!!!!!!!!");
-  if(game->my_num == player) {
-    printf("You are dropped out.\n");
-  } else {
-    printf("Player%d is dropped out.\n", player);
-  }
-  game->dropout[player] = DROP_OUT;
+  printf("Player%d is dropped out.\n", game->order[order]);
+  game->dropout[game->order[order]] = DROP_OUT;
   game->player_num--;
 }
 
-// サーバーから爆弾ゲーム初期化した情報を手に入れる
-int get_bakudan(bakudan* game) {
-  // player_numを手に入れる
-}
-
-// 脱落者をサーバーから受け取る
-int get_dropout() {
+// 爆弾を爆破
+int explode_bomb(bakudan* game, int loc) {
+  if(game->bomb_loc == loc) {
+    game->bomb_status[loc] = EXPLODED;
+    return 1;
+  }
   return 0;
 }
 
@@ -135,11 +124,7 @@ int input_data(bakudan game, int player) {
   return data;
 }
 
-// ゲームが終了したかサーバーから受け取る
-int is_game_finished() {
-  return 0;
-}
-
+// 入力が正しいか判定
 int check_input(bakudan game, int input) {
   int i;
 
@@ -156,23 +141,31 @@ int check_input(bakudan game, int input) {
 void make_bakudan(bakudan* game) {
   int i;
 
+  game->bomb_loc = rand() % game->player_num;
+
+  // スイッチを押す順番の初期化
+  for(i = 0; i < game->player_num; i++)
+    game->order[i] = i;
+  for(i = 0; i < game->player_num; i++) {
+    int tmp;
+    int random = rand() % game->player_num;
+    tmp = game->order[random];
+    game->order[random] = game->order[i];
+    game->order[i] = tmp;
+  }
+
   // 爆弾の状態の初期化
   for(i = 0; i < game->player_num+1; i++)
     game->bomb_status[i] = NOT_PRESSED;
+
+  // 脱落者の初期化
+  for(i = 0; i < game->player_num-1; i++) {
+    game->dropout[i] = -1;
+  }
 }
 
+// スイッチを押す処理
 int press_switch(bakudan* game, int loc) {
-  /*
-  if(game->bomb_loc == loc) {
-    game->bomb_status[loc] = EXPLODED;
-    return 1;
-  } else {
-    game->bomb_status[loc] = PRESSED;
-    return 0;
-  }*/
+  game->bomb_status[loc] = PRESSED;
   return 0;
-}
-
-// 押したスイッチの場所をサーバーに送る
-int send_input(int loc) {
 }

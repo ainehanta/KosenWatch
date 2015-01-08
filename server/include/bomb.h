@@ -1,5 +1,5 @@
-#ifndef __BOMB_H
-#define __BOMB_H
+#ifndef INCLUDED_BAKUDAN_H
+#define INCLUDED_BAKUDAN_H
 #define DEFAULT_PLAYER_NUM 3
 #define DROP_OUT 1
 #define NOTHING -1
@@ -20,8 +20,10 @@ int check_input(bakudan game, int input);
 void disp_bomb(bakudan game);
 void disp_guide_message(bakudan game, int order);
 void disp_input_guide(bakudan game);
+void disp_safe(bakudan game, int order);
 void disp_winner(bakudan game);
 int drop_out(bakudan* game, int order);
+int explode_bomb(bakudan* game, int loc);
 void init_bakudan(bakudan* game);
 int input_data(bakudan game, int player);
 void make_bakudan(bakudan* game);

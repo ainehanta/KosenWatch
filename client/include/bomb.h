@@ -1,5 +1,5 @@
-#ifndef __BOMB_H
-#define __BOMB_H
+#ifndef INCLUDED_BAKUDAN_H
+#define INCLUDED_BAKUDAN_H
 #define DEFAULT_PLAYER_NUM 3
 #define DROP_OUT 1
 #define NOTHING -1
@@ -8,33 +8,26 @@
 #define EXPLODED 2
 
 typedef struct bakudan {
-  //int bomb_loc;
+  int bomb_loc;
   int bomb_status[DEFAULT_PLAYER_NUM+1];
   int dropout[DEFAULT_PLAYER_NUM-1];
   int order[DEFAULT_PLAYER_NUM];
   int player_num;
-  int my_num;
 } bakudan;
 
 int bakudan_main();
 int check_input(bakudan game, int input);
-int check_result(bakudan* game, int now_player);
 void disp_bomb(bakudan game);
-void disp_game(bakudan game, int player);
 void disp_guide_message(bakudan game, int order);
 void disp_input_guide(bakudan game);
+void disp_safe(bakudan game, int order);
 void disp_winner(bakudan game);
-int drop_out(bakudan* game, int player);
-int get_bakudan(bakudan* game);
-int get_bakudan_status();
-int get_dropout();
-int get_winner();
+int drop_out(bakudan* game, int order);
+int explode_bomb(bakudan* game, int loc);
 void init_bakudan(bakudan* game);
 int input_data(bakudan game, int player);
-int is_game_finished();
 void make_bakudan(bakudan* game);
 int press_switch(bakudan* game, int loc);
-int send_input(int loc);
 
 #endif
 
