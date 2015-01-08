@@ -28,6 +28,9 @@ void init_bakudan(bakudan* game);
 int input_data(bakudan game, int player);
 void make_bakudan(bakudan* game);
 int press_switch(bakudan* game, int loc);
+int send_data(unsigned char* data, int player);
+int send_player_num(bakudan game);
+int send_init_data(bakudan game);
 
 #endif
 

@@ -1,4 +1,4 @@
-#include "bakudan.h"
+#include "bomb.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -14,6 +14,7 @@ int bakudan_main() {
     int player_num = game.player_num;
     int i;
     make_bakudan(&game);
+    send_init_data(game);
     // スイッチを押すための入力
     for(i = 0; i < game.player_num; i++) {
       disp_guide_message(game, i);
@@ -168,4 +169,45 @@ void make_bakudan(bakudan* game) {
 int press_switch(bakudan* game, int loc) {
   game->bomb_status[loc] = PRESSED;
   return 0;
+}
+
+int send_data(unsigned char* data, int player) {
+  return 0;
+}
+
+int send_init_data(bakudan game) {
+  // 爆弾初期化の合図[2]と
+  // プレイヤー数とプレイヤーの順番を
+  // 最後に[\0]を
+  // つなげて送る
+
+  unsigned char data[2+DEFAULT_PLAYER_NUM];
+  int i;
+
+  data[0] = '2';
+  data[1] = game.player_num + '0';
+  for(i = 0; i < game.player_num; i++) {
+    data[2+i] = game.order[i] + '0';
+  }
+  data[2+i] = '\0';
+
+  for(i = 0; i < game.player_num; i++) {
+    send_data(data, i);
+  }
+}
+
+int send_player_num(bakudan game) {
+  // 爆弾ゲーム開始の合図[1]と
+  // プレイヤーのナンバーを
+  // つなげて送る
+  int i;
+  unsigned char data[2];
+
+  data[0] = '1';
+
+  for(i = 0; i < game.player_num; i++) {
+    // =========ランダムにする
+    data[1+i] = i + '0';
+    send_data(data, i);
+  }
 }
