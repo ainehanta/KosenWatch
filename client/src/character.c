@@ -5,42 +5,81 @@
 #include <stdlib.h>
 #include <time.h>
 
-int main()
+// 初期パラメータ作成
+void setting(status *player, char* name)
 {
-  status player;
-  int action=0;
-
-  setting(&player);
-
-  while(1){
-    printf("sinka=%d\n",player->sinka);
-    print_menu(player,&action);
-    if(action==0 || action==1){
-      player.turn++;
-      first_judge(player);
-      if(player.turn>11){
-        final_judge(player);
-        break;
-      }
-    }
-  }
-  return 0;
-}
-
-void setting(status *player)
-{
-
   player->inteli = 40;
   player->health = 80;
   player->turn = 0;
   player->sinka = 0;
 
-  printf("What is your name?\n");
-  scanf("%s",player->name);
-
+  strcpy(player->name, name);
 }
 
-void first_judge(status *player)
+// 進化判定関数
+// 戻り値がSINKA_FINALの時、ゲーム終了
+int judge(status *player)
+{
+  if(player->sinka == 0)
+  {
+    first_judge(player);
+    return SINKA_FIRST;
+  }
+  else
+  {
+    final_judge(player);
+    return SINKA_FINAL;
+  }
+
+  return -1;
+}
+
+// キャラクター表示する
+void print_character(status *player)
+{
+  int month;
+
+  month = player->turn+4;
+  if(month>12){
+    month = month-12;
+  }
+
+  printf("\n");
+  printf("%d月\n",month);
+  printf("\n");
+  printf("your name: %s\n",player->name);
+  printf("your parameter: inteli %d  health %d sinka %d\n", player->inteli, player->health, player->sinka);
+
+  if(player->sinka == 0){
+    printf("your title: [留年生]\n");
+    printf("status:\n");
+    printf("        ∧∧\n");
+    printf("     ヽ(・ω・)/ ズコー\n");
+    printf("   ＼(.＼ ノ\n");
+    printf(")、ハ,,、\n");
+
+  }else if(player->sinka == 1){
+    printf("your title: [ストロング高専生]\n");
+    printf("status:\n");
+    printf(" ∧＿∧\n");
+    printf("( ・ω・)=つ≡つ\n");
+    printf("(っ ≡つ=つ\n");
+    printf("/ ) ババババ\n");
+    printf("( /‾∪\n");
+
+  }else if(player->sinka == 2){
+    printf("your title: [インテリ高専生]\n");
+    printf("status:\n");
+    printf(" 〃∩ ∧＿∧\n");
+    printf("⊂⌒（ ・ω・）\n");
+    printf("  ｀ヽ_っ⌒/⌒ｃ\n");
+    printf("       ⌒ ⌒\n");
+  }
+}
+
+
+// PRIVATE
+void _first_judge(status *player)
 {
   srand((unsigned)time(NULL));
 
@@ -66,6 +105,7 @@ void first_judge(status *player)
   }
 }
 
+// PRIVATE
 void final_judge(status *player)
 {
   if(player->turn>11){
@@ -141,53 +181,4 @@ void final_judge(status *player)
       printf("　 　　　　　　`・+。*・ ゜\n");
     }
   }
-}
-
-void print_menu(status *player, int *action)
-{
-  int month;
-
-  month = player->turn+4;
-  if(month>12){
-    month = month-12;
-  }
-
-  printf("\n");
-  printf("%d月\n",month);
-  printf("\n");
-  printf("your name: %s\n",player->name);
-  printf("your parameter: inteli %d  health %d sinka %d\n", player->inteli, player->health, player->sinka);
-
-  if(player->sinka == 0){
-    printf("your title: [留年生]\n");
-    printf("status:\n");
-    printf("        ∧∧\n");
-    printf("     ヽ(・ω・)/ ズコー\n");
-    printf("   ＼(.＼ ノ\n");
-    printf(")、ハ,,、\n");
-
-  }else if(player->sinka == 1){
-    printf("your title: [ストロング高専生]\n");
-    printf("status:\n");
-    printf(" ∧＿∧\n");
-    printf("( ・ω・)=つ≡つ\n");
-    printf("(っ ≡つ=つ\n");
-    printf("/ ) ババババ\n");
-    printf("( /‾∪\n");
-
-  }else if(player->sinka == 2){
-    printf("your title: [インテリ高専生]\n");
-    printf("status:\n");
-    printf(" 〃∩ ∧＿∧\n");
-    printf("⊂⌒（ ・ω・）\n");
-    printf("  ｀ヽ_っ⌒/⌒ｃ\n");
-    printf("       ⌒ ⌒\n");
-  }
-
-  printf("\n------------------------------\n");
-  printf("MENU\n");
-  printf("0: ババ抜き, 1: 爆弾ゲーム\n");
-  printf("------------------------------\n");
-  printf("Input number: ");
-  scanf("%d", action);
 }
