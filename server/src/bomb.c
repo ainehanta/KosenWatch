@@ -1,6 +1,7 @@
 #include "bomb.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 // メインループ
@@ -8,7 +9,10 @@ int bakudan_main() {
   bakudan game;
   int press[DEFAULT_PLAYER_NUM];
 
+  wait_add_player(&game);
   init_bakudan(&game);
+  send_player_num(game);
+  send_player_name(game);
 
   for(; game.player_num > 1;) {
     int player_num = game.player_num;
@@ -19,7 +23,7 @@ int bakudan_main() {
     for(i = 0; i < game.player_num; i++) {
       disp_guide_message(game, i);
       disp_bomb(game);
-      press[i] = input_data(game, game.order[i]);
+      press[i] = input_data(game, i);
       press_switch(&game, press[i]);
     }
     // 爆破
@@ -38,6 +42,19 @@ int bakudan_main() {
   disp_winner(game);
 
   return game.order[0];
+}
+
+// 入力が正しいか判定
+int check_input(bakudan game, int input) {
+  int i;
+
+  if(input < 0 || input > game.player_num)
+    return 1;
+
+  if(game.bomb_status[input] != NOT_PRESSED)
+    return 1;
+
+  return 0;
 }
 
 // 全部の爆弾を表示
@@ -103,19 +120,37 @@ int explode_bomb(bakudan* game, int loc) {
   return 0;
 }
 
+void get_data(char* data, int num) {
+}
+
+int get_input_data(int num) {
+  char data[3];
+  get_data(data, num);
+  return (int)(data[1] - '0');
+}
+
+// プレイヤー名をゲット
+// プレイヤー名の最後に'\0'が入ってないと多分ヤバい
+void get_name(bakudan* game, int num) {
+  char data[DEFAULT_PLAYER_NUM+2];
+  get_data(data, num);
+  strcpy(game->name[num], &data[1]);
+}
+
 // 爆弾ゲームを初期化
 void init_bakudan(bakudan* game) {
   game->player_num = DEFAULT_PLAYER_NUM;
 }
 
 // 押すスイッチの場所を入力
-int input_data(bakudan game, int player) {
+int input_data(bakudan game, int num) {
   int data;
   int input_check;
 
   do {
     disp_input_guide(game);
-    data = getchar();
+    //data = getchar();
+    data = get_input_data(num);
     getchar();
     input_check = check_input(game, data - '0');
   } while(input_check);
@@ -123,19 +158,6 @@ int input_data(bakudan game, int player) {
   data -= '0';
 
   return data;
-}
-
-// 入力が正しいか判定
-int check_input(bakudan game, int input) {
-  int i;
-
-  if(input < 0 || input > game.player_num)
-    return 1;
-
-  if(game.bomb_status[input] != NOT_PRESSED)
-    return 1;
-
-  return 0;
 }
 
 // 爆弾を初期化
@@ -191,23 +213,65 @@ int send_init_data(bakudan game) {
   }
   data[2+i] = '\0';
 
-  for(i = 0; i < game.player_num; i++) {
+  for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
+    send_data(data, i);
+  }
+}
+
+// プレイヤーの名前全部を送る
+void send_player_name(bakudan game) {
+  int i = 1;
+  unsigned char data[2+3+NAME_LENGTH*DEFAULT_PLAYER_NUM];
+  data[0] = '1';
+  data[1] = '\0';
+  strcat(data, &game.name[0]);
+  strcat(data, ',');
+  strcat(data, &game.name[1]);
+  strcat(data, ',');
+  strcat(data, &game.name[2]);
+  strcat(data, ',');
+  for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
     send_data(data, i);
   }
 }
 
 int send_player_num(bakudan game) {
-  // 爆弾ゲーム開始の合図[1]と
+  // 爆弾ゲーム開始の合図[0]と
   // プレイヤーのナンバーを
   // つなげて送る
   int i;
-  unsigned char data[2];
+  unsigned char data[4];
 
-  data[0] = '1';
+  data[0] = '0';
 
-  for(i = 0; i < game.player_num; i++) {
-    // =========ランダムにする
-    data[1+i] = i + '0';
+  data[2] = game.player_num + '0';
+  data[3] = '\0';
+  // プレイヤー全員にデータを送る
+  for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
+    data[1] = i + '0';
     send_data(data, i);
+  }
+}
+
+// あなたの番だということを送る
+void send_your_order(bakudan game, int num) {
+  int i;
+  unsigned char data[7];
+  data[0] = '3';
+  data[1] = game.order[num] + '0';
+
+  for(i = 0; i < game.player_num+1; i++) {
+    data[i+2] = game.bomb_status[i];
+  }
+  data[6] = '\0';
+  for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
+    send_data(data, i);
+  }
+}
+
+void wait_add_player(bakudan* game) {
+  int i;
+  for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
+    get_name(game, i);
   }
 }
