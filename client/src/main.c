@@ -39,6 +39,7 @@ int print_title(void)
   int action;
 
   printf("KosenWatch!\n");
+  printf("-----------------\n");
   printf("0:続きから始める\n");
   printf("1:新しく始める\n");
 
