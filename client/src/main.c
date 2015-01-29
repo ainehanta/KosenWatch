@@ -16,10 +16,14 @@ int main(void)
 
   setting(&player);
 
+  srand((unsigned)time(NULL));
+
   while(1){
     printf("sinka=%d\n",player->sinka);
     print_menu(player,&action);
-    if(action==0 || action==1){
+    if(action==2){
+      print_action(player);
+    }else if(action==0 || action==1){
       player.turn++;
       first_judge(player);
       if(player.turn>11){
@@ -27,8 +31,7 @@ int main(void)
         break;
       }
     }
-  }
-
+  } 
   return 0;
 }
 
@@ -37,8 +40,8 @@ int print_title(void)
   int action;
 
   printf("KosenWatch!\n");
-  printf("0:邯壹″縺九ｉ蟋九ａ繧欺n");
-  printf("1:譁ｰ縺励￥蟋九ａ繧欺n");
+  printf("0:新しく始める\n");
+  printf("1:続きから始める\n");
 
   scanf("%d", &action);
 
@@ -51,7 +54,7 @@ int print_turn_menu(void)
 
   printf("\n------------------------------\n");
   printf("MENU\n");
-  printf("0: 繝舌ヰ謚懊″, 1: 辷�蠑ｾ繧ｲ繝ｼ繝\n");
+  printf("0: ババ抜き, 1: 爆弾ゲーム, 2:コミュニケーション\n");
   printf("------------------------------\n");
   printf("Input number: ");
 

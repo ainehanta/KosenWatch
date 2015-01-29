@@ -8,8 +8,8 @@
 // 初期パラメータ作成
 void setting(status *player, char* name)
 {
-  player->inteli = 40;
-  player->health = 80;
+  player->inteli = 0;
+  player->health = 0;
   player->turn = 0;
   player->sinka = 0;
 
@@ -32,6 +32,46 @@ int judge(status *player)
   }
 
   return -1;
+}
+//キャラクターを表示
+void print_action(status *player)
+{
+  int val;
+
+  val = rand()%4;
+
+  if(val==0){
+    printf("ネコとたわむれた！\n");
+    printf("　　　　　　　　　　  |\n");
+    printf("　　　　　　　　　 　 |　彡⌒ミ\n");
+    printf("　　　　　　　　　　　 ＼(･ω･`　):: \n");
+    printf("　　　　　　　　　　　　　(|　　|)::::\n");
+    printf("　　　　　　　　　　　　 　(γ　/:::::::\n");
+    printf("　   ∧_∧ 　　　　　　　　 し ＼:::\n");
+    printf("　. ﾐ・_・ﾐ　　　　　　　　　 　＼\n");
+    printf(" ヾ(,_ｕｕﾉ\n");
+  }else if(val==1){
+    printf("ごはんを食べた！\n");
+    printf("   ∧＿∧ \n");
+    printf("　(´･ω･`）\n");
+    printf("　(っ=川O\n");
+    printf("￣￣ヽ二フ￣￣￣￣＼ \n");
+  }else if(val==2){
+    printf("こたつに吸い込まれた！\n");
+    printf("   　∧_∧ \n");
+    printf("　（ ´・ω・)\n"); 
+    printf("　//＼￣￣旦＼ \n");
+    printf("／/ ※ ＼＿＿＿＼ \n");
+    printf("＼＼ 　※ 　※ ※ ヽ\n"); 
+    printf("　 ＼ヽ-＿_＿--＿__ヽ\n"); 
+  }else if(val==3){
+    printf("運動した！\n");
+    printf("  　　　 ∧,,∧ \n");
+    printf("　　　　(´・ω・)　　　　　　　ｼｭｯ!!　　 ∧,,∧ \n");
+    printf("　　　　（　っ(⌒）　　　◯三二≡＝─　　⊂(・ω・｀)、 \n");
+    printf("　　　　 `ｕ-ｕ'　　　　　　　　　　　 ヽ　　と) \n");
+    printf("　　　　　　　　　　　　　　　　　　　　 ｀ｕ-ｕ' \n");
+  }
 }
 
 // キャラクター表示する
@@ -81,8 +121,6 @@ void print_character(status *player)
 // PRIVATE
 void _first_judge(status *player)
 {
-  srand((unsigned)time(NULL));
-
   int val = rand()%2;
 
   if(player->turn==6){
