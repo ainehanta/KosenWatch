@@ -169,3 +169,22 @@ int press_switch(bakudan* game, int loc) {
   game->bomb_status[loc] = PRESSED;
   return 0;
 }
+
+void send_data(unsigned char data[]) {
+  printf("sending %s.", data);
+}
+
+void send_input(bakudan game, unsigned char input) {
+  unsigned char data[2];
+  data[0] = '2';
+  data[1] = input;
+  send_data(data);
+}
+
+void send_name(bakudan game, unsigned char name[]) {
+  unsigned char data[MAX_NAME_LENGTH + 2];
+  data[0] = '1';
+  strcat(&data[1], name);
+
+  send_data(name);
+}

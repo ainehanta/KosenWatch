@@ -29,5 +29,9 @@ int input_data(bakudan game, int player);
 void make_bakudan(bakudan* game);
 int press_switch(bakudan* game, int loc);
 
+void send_data(unsigned char data[]);
+void send_input(bakudan game, unsigned char input);
+void send_name(bakudan game, unsigned char name[]);
+
 #endif
 
