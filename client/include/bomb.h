@@ -7,6 +7,14 @@
 #define PRESSED 1
 #define EXPLODED 2
 #define NAME_LENGTH 10
+#define DEBUG
+#include <stdarg.h>
+
+#ifdef DEBUG
+#define print(fmt,...) printf(fmt,##__VA_ARGS__)
+#else
+#define print(cc, ...) ;
+#endif
 
 typedef struct bakudan {
   int bomb_loc;
@@ -21,14 +29,14 @@ typedef struct bakudan {
 int bakudan_main();
 int check_input(bakudan game, int input);
 void disp_bomb(bakudan game);
-void disp_guide_message(bakudan game, int order);
+void disp_guide_message(bakudan game, int player_num);
 void disp_input_guide(bakudan game);
 void disp_safe(bakudan game, int order);
 void disp_winner(int winner);
 int drop_out(bakudan* game, int order);
 int explode_bomb(bakudan* game, int loc);
 void init_bakudan(bakudan* game);
-int input_data(bakudan game, int player);
+int input_data(bakudan game);
 void make_bakudan(bakudan* game);
 int press_switch(bakudan* game);
 
@@ -39,6 +47,7 @@ void get_init_data(bakudan* game);
 void get_is_dropped(bakudan* game);
 void get_name(bakudan* game);
 void get_player_num(bakudan* game);
+int get_push_loc(bakudan* game);
 int get_winner(bakudan* game);
 void send_data(unsigned char data[]);
 void send_input(bakudan game, unsigned char input);

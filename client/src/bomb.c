@@ -2,23 +2,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
 
-// ¥á¥¤¥ó¥ë¡¼¥×
+// ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
 int bakudan_main() {
   bakudan game;
   int winner;
+  int current_player;
+  unsigned char data[1024];
 
   init_bakudan(&game);
-  send_name(game, "testkun");
+  send_name(game, (unsigned char*)"testkun");
   get_player_num(&game);
   get_name(&game);
+  printf("%d\n", game.my_player_num);
 
   for(; game.player_num > 1;) {
+    puts("get_cmd");
+    get_data(data);
+
+    printf("%s", data);
+    switch(data[0] - '0') {
+    case 0:
+      break;
+    case 1:
+      get_name(&game);
+      break;
+    case 2:
+      get_init_data(&game);
+      break;
+    case 3:
+      current_player = get_current_player(&game);
+      break;
+    case 4:
+      press_switch(&game);
+      break;
+    case 5: // å‰²ã‚Šå½“ã¦ã¦ãªã‹ã£ãŸâ€¦
+      break;
+    case 6:
+      disp_bomb(game);
+      get_is_dropped(&game);
+      make_bakudan(&game);
+      break;
+    case 7:
+      winner = get_winner(&game);
+      break;
+    case 8:
+      send_name(game, "testkun");
+      break;
+    case 9:
+      disp_bomb(game);
+      disp_guide_message(game, current_player);
+      //if(current_player == game.my_player_num) input_data(game);
+      input_data(game);
+      break;
+    default:
+      break;
+    }
+
+
+    /*
     int player_num = game.player_num;
     int i;
+      puts("osdifj");
     get_init_data(&game);
     make_bakudan(&game);
-    // ¥¹¥¤¥Ã¥Á¤ò²¡¤¹¤¿¤á¤ÎÆşÎÏ
+    // ã‚¹ã‚¤ãƒƒãƒã‚’æŠ¼ã™ãŸã‚ã®å…¥åŠ›
     for(i = 0; i < game.player_num; i++) {
       disp_bomb(game);
       if(get_current_player(&game) == game.my_player_num) {
@@ -27,18 +79,18 @@ int bakudan_main() {
       }
       press_switch(&game);
     }
-    // ÇúÇË
-    get_is_dropped(&game);
+    // çˆ†ç ´
+    get_is_dropped(&game);*/
   }
 
-  // ¾¡¼Ô¤òorderÇÛÎó¤ÎºÇ½é¤ÎÍ×ÁÇ¤Ë°ÜÆ°¤¹¤ë
-  winner = get_winner(&game);
+  // å‹è€…ã‚’å¾—ã‚‹
+  //winner = get_winner(&game);
   disp_winner(winner);
 
-  return game.order[0];
+  return winner;
 }
 
-// Á´Éô¤ÎÇúÃÆ¤òÉ½¼¨
+// å…¨éƒ¨ã®çˆ†å¼¾ã‚’è¡¨ç¤º
 void disp_bomb(bakudan game) {
   int i;
 
@@ -46,23 +98,27 @@ void disp_bomb(bakudan game) {
   for(i = 0; i < game.player_num + 1; i++) {
     switch(game.bomb_status[i]) {
     case NOT_PRESSED:
-      printf("ÆÌ");
+      printf("å‡¸");
       break;
     case PRESSED:
-      printf("±ú");
+      printf("å‡¹");
       break;
     }
   }
   puts("");
 }
 
-// ÁàºîÀâÌÀ¤Ê¤É¤Î¥¬¥¤¥ÉÉ½¼¨
-void disp_guide_message(bakudan game, int order) {
-  printf("Please input bomb_num of you want to press.\n");
-  printf("player number is %d\n", game.order[order]);
+// æ“ä½œèª¬æ˜ãªã©ã®ã‚¬ã‚¤ãƒ‰è¡¨ç¤º
+void disp_guide_message(bakudan game, int player_num) {
+  if(player_num == game.my_player_num) {
+    puts("Your turn.");
+    printf("Please input bomb_num of you want to press.\n");
+  } else {
+    printf("player %s's turn\n", game.name[player_num]);
+  }
 }
 
-// ÆşÎÏ¤¹¤ë»ş¤Î¥¬¥¤¥ÉÉ½¼¨
+// å…¥åŠ›ã™ã‚‹æ™‚ã®ã‚¬ã‚¤ãƒ‰è¡¨ç¤º
 void disp_input_guide(bakudan game) {
   int i;
   printf("input ");
@@ -74,25 +130,31 @@ void disp_input_guide(bakudan game) {
   puts("");
 }
 
-// Ã¦Íî¤¸¤ã¤Ê¤¤»ş¤ÎÉ½¼¨
+// è„±è½ã˜ã‚ƒãªã„æ™‚ã®è¡¨ç¤º
 void disp_safe(bakudan game, int order) {
   printf("Player%d is safe!\n", game.order[order]);
 }
 
-// ¾¡¼ÔÉ½¼¨
+// å‹è€…è¡¨ç¤º
 void disp_winner(int winner) {
   printf("Winner is Player%d\n", winner);
 }
 
-// Ã¦Íî¼ÔÄÉ²Ã
+// è„±è½è€…è¿½åŠ 
 int drop_out(bakudan* game, int order) {
+  if(order >= game->player_num) {
+    puts("order is invalid num.");
+    return 1;
+  }
   puts("Bang!!!!!!!!!!!!!!!!!");
   printf("Player%d is dropped out.\n", game->order[order]);
   game->dropout[game->order[order]] = DROP_OUT;
   game->player_num--;
+
+  return 0;
 }
 
-// ÇúÃÆ¤òÇúÇË
+// çˆ†å¼¾ã‚’çˆ†ç ´
 int explode_bomb(bakudan* game, int loc) {
   if(game->bomb_loc == loc) {
     game->bomb_status[loc] = EXPLODED;
@@ -101,13 +163,13 @@ int explode_bomb(bakudan* game, int loc) {
   return 0;
 }
 
-// ÇúÃÆ¥²¡¼¥à¤ò½é´ü²½
+// çˆ†å¼¾ã‚²ãƒ¼ãƒ ã‚’åˆæœŸåŒ–
 void init_bakudan(bakudan* game) {
   game->player_num = DEFAULT_PLAYER_NUM;
 }
 
-// ²¡¤¹¥¹¥¤¥Ã¥Á¤Î¾ì½ê¤òÆşÎÏ
-int input_data(bakudan game, int player) {
+// æŠ¼ã™ã‚¹ã‚¤ãƒƒãƒã®å ´æ‰€ã‚’å…¥åŠ›
+int input_data(bakudan game) {
   int data;
   int input_check;
 
@@ -116,6 +178,7 @@ int input_data(bakudan game, int player) {
     data = getchar();
     getchar();
     input_check = check_input(game, data - '0');
+    printf("input is %c %d\n", data, data);
   } while(input_check);
 
   send_input(game, data);
@@ -125,7 +188,7 @@ int input_data(bakudan game, int player) {
   return data;
 }
 
-// ÆşÎÏ¤¬Àµ¤·¤¤¤«È½Äê
+// å…¥åŠ›ãŒæ­£ã—ã„ã‹åˆ¤å®š
 int check_input(bakudan game, int input) {
   int i;
 
@@ -142,13 +205,13 @@ int check_input(bakudan game, int input) {
   return 0;
 }
 
-// ÇúÃÆ¤ò½é´ü²½
+// çˆ†å¼¾ã‚’åˆæœŸåŒ–
 void make_bakudan(bakudan* game) {
   int i;
 
   //game->bomb_loc = rand() % game->player_num;
 /*
-  // ¥¹¥¤¥Ã¥Á¤ò²¡¤¹½çÈÖ¤Î½é´ü²½
+  // ã‚¹ã‚¤ãƒƒãƒã‚’æŠ¼ã™é †ç•ªã®åˆæœŸåŒ–
   for(i = 0; i < game->player_num; i++)
     game->order[i] = i;
   for(i = 0; i < game->player_num; i++) {
@@ -159,36 +222,37 @@ void make_bakudan(bakudan* game) {
     game->order[i] = tmp;
   }
 
-  // ÇúÃÆ¤Î¾õÂÖ¤Î½é´ü²½
+  // çˆ†å¼¾ã®çŠ¶æ…‹ã®åˆæœŸåŒ–
   for(i = 0; i < game->player_num+1; i++)
     game->bomb_status[i] = NOT_PRESSED;
 
-  // Ã¦Íî¼Ô¤Î½é´ü²½
+  // è„±è½è€…ã®åˆæœŸåŒ–
   for(i = 0; i < game->player_num-1; i++) {
     game->dropout[i] = -1;
   }*/
-  // ÇúÃÆ¤Î¾õÂÖ¤Î½é´ü²½
+  // çˆ†å¼¾ã®çŠ¶æ…‹ã®åˆæœŸåŒ–
   for(i = 0; i < game->player_num+1; i++)
     game->bomb_status[i] = NOT_PRESSED;
 
-  // Ã¦Íî¼Ô¤Î½é´ü²½
+  // è„±è½è€…ã®åˆæœŸåŒ–
   for(i = 0; i < game->player_num-1; i++) {
     game->dropout[i] = -1;
   }
 }
 
-// ¥¹¥¤¥Ã¥Á¤ò²¡¤¹½èÍı
+// ã‚¹ã‚¤ãƒƒãƒã‚’æŠ¼ã™å‡¦ç†
 int press_switch(bakudan* game) {
-  int loc = get_input(game);
+  int loc = get_push_loc(game);
   game->bomb_status[loc] = PRESSED;
   return 0;
 }
 
-// º£ÇúÃÆ¥¹¥¤¥Ã¥Á¤ò²¡¤¹¥×¥ì¥¤¥ä¡¼¥Ê¥ó¥Ğ¡¼¤òÊÖ¤¹
+// ä»Šçˆ†å¼¾ã‚¹ã‚¤ãƒƒãƒã‚’æŠ¼ã™ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒŠãƒ³ãƒãƒ¼ã‚’è¿”ã™
 int get_current_player(bakudan* game) {
   int i;
   unsigned char data[1024];
 
+  print("[GETTING] get current player\n");
   get_data(data);
 
   for(i = 0; i < game->player_num+1; i++) {
@@ -199,7 +263,7 @@ int get_current_player(bakudan* game) {
 }
 
 void get_data(unsigned char data[]) {
-  puts("GETTING");
+  print("GETTING\n");
   scanf("%s", data);
   getchar();
 }
@@ -207,7 +271,9 @@ void get_data(unsigned char data[]) {
 int get_input(bakudan* game) {
   unsigned char data[1024];
 
+  print("[GETTING] get input\n");
   get_data(data);
+
   return data[1] - '0';
 }
 
@@ -215,7 +281,9 @@ void get_init_data(bakudan* game) {
   int i, j, p_num = 0;
   unsigned char data[1024];
 
+  printf("[GETTING] get init data\n");
   get_data(data);
+
   game->player_num = data[1] - '0';
 
   for(i = 0; i < game->player_num; i++) {
@@ -223,11 +291,12 @@ void get_init_data(bakudan* game) {
   }
 }
 
-// Ã¦Íî¤·¤¿¤«
+// è„±è½ã—ãŸã‹
 void get_is_dropped(bakudan* game) {
   int i;
   unsigned char data[1024];
 
+  printf("[GETTING] get is dropped\n");
   get_data(data);
 
   if(data[1] - '0' == 1) {
@@ -242,6 +311,7 @@ void get_name(bakudan* game) {
   int i, j, p_num = 0;
   unsigned char data[1024];
 
+  print("[GETTING] get player name\n");
   get_data(data);
 
   for(i = 1; p_num < DEFAULT_PLAYER_NUM && i < (NAME_LENGTH + 1)*3 + 1 && data[i] != '\0'; i++) {
@@ -257,20 +327,30 @@ void get_name(bakudan* game) {
 void get_player_num(bakudan* game) {
   unsigned char data[1024];
 
+  print("[GETTING] get player num\n");
   get_data(data);
   game->my_player_num = data[1] - '0';
+}
+
+int get_push_loc(bakudan* game) {
+  unsigned char data[1024];
+
+  print("[GETTING] get push loc\n");
+  get_data(data);
+  return data[1] - '0';
 }
 
 int get_winner(bakudan* game) {
   unsigned char data[1024];
 
+  print("[GETTING] get winner\n");
   get_data(data);
 
   return data[1] - '0';
 }
 
 void send_data(unsigned char data[]) {
-  printf("sending %s.\n", data);
+  print("sending %s.\n", data);
 }
 
 void send_input(bakudan game, unsigned char input) {
@@ -283,8 +363,11 @@ void send_input(bakudan game, unsigned char input) {
 
 void send_name(bakudan game, unsigned char name[]) {
   unsigned char data[NAME_LENGTH + 2];
+
   data[0] = '1';
-  strcat(&data[1], name);
+  strcat((char *)&data[1], (char *)name);
+  print("[SENDING] sending name %s\n", data);
 
   send_data(name);
 }
+

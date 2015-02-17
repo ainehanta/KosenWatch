@@ -2,6 +2,6 @@
 
 int main(void)
 {
-  bakudan_main();
   printf("KosenWatch\n");
+  int winner = bakudan_main();
 }
