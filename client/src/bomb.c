@@ -56,7 +56,7 @@ int bakudan_main() {
     case 9:
       disp_bomb(game);
       disp_guide_message(game, current_player);
-      //if(current_player == game.my_player_num) input_data(game);
+      if(current_player == game.my_player_num) input_data(game);
       input_data(game);
       break;
     default:
