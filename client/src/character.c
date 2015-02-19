@@ -1,6 +1,7 @@
 #include "character.h"
 #include "status.h"
 
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -8,7 +9,7 @@
 // 初期パラメータ作成
 void setting(status *player, char* name)
 {
-  player->inteli = 40;
+  player->intelli = 40;
   player->health = 80;
   player->turn = 0;
   player->sinka = 0;
@@ -22,12 +23,12 @@ int judge(status *player)
 {
   if(player->sinka == 0)
   {
-    first_judge(player);
+    _first_judge(player);
     return SINKA_FIRST;
   }
   else
   {
-    final_judge(player);
+    _final_judge(player);
     return SINKA_FINAL;
   }
 
@@ -48,7 +49,7 @@ void print_character(status *player)
   printf("%d月\n",month);
   printf("\n");
   printf("your name: %s\n",player->name);
-  printf("your parameter: inteli %d  health %d sinka %d\n", player->inteli, player->health, player->sinka);
+  printf("your parameter: intelli %d  health %d sinka %d\n", player->intelli, player->health, player->sinka);
 
   if(player->sinka == 0){
     printf("your title: [留年生]\n");
@@ -87,15 +88,15 @@ void _first_judge(status *player)
 
   if(player->turn==6){
 
-    if(player->inteli<player->health){
+    if(player->intelli<player->health){
       player->sinka = 1;
       printf("進化しました！\n");
-    } else if(player->inteli>player->health){
+    } else if(player->intelli>player->health){
       player->sinka = 2;
       printf("進化しました！\n");
-    } else if(player->inteli==player->health){
+    } else if(player->intelli==player->health){
       if(val==0){
-        player->shinka = 1;
+        player->sinka = 1;
         printf("進化しました！\n");
       }else if(val==1){
         player->sinka = 2;
@@ -106,11 +107,11 @@ void _first_judge(status *player)
 }
 
 // PRIVATE
-void final_judge(status *player)
+void _final_judge(status *player)
 {
   if(player->turn>11){
 
-    if(player->sinka == 1 && player->inteli<60 && player->health<60){
+    if(player->sinka == 1 && player->intelli<60 && player->health<60){
       printf("NHK(ニート・ヒッキー・警備員)END\n");
 
       printf(" ／⌒ヽ\n");
@@ -118,14 +119,14 @@ void final_judge(status *player)
       printf(" | 3 (∪‾]\n");
       printf("く、・  (∩‾]\n");
       printf("-------------\n");
-    }else if(player->sinka == 2 && player->inteli<60 && player->health<60){
+    }else if(player->sinka == 2 && player->intelli<60 && player->health<60){
       printf("NHK(ニート・ヒッキー・警備員)END\n");
       printf(" ／⌒ヽ\n");
       printf("く/・   ⌒ヽ\n");
       printf(" | 3 (∪‾]\n");
       printf("く、・  (∩‾]\n");
       printf("-------------\n");
-    }else if(player->sinka == 1 && player->inteli<60 && player->health>=60){
+    }else if(player->sinka == 1 && player->intelli<60 && player->health>=60){
       printf("アイツ，良いやつだったんだけどなEND\n");
       printf("　 | l|　ｌ || || l|\n");
       printf(" 　 | l|　| || || ｌ!\n");
@@ -135,7 +136,7 @@ void final_judge(status *player)
       printf(" 　　 (　　　 ）\n");
       printf(" 　　 と　 　 i\n");
       printf(" 　　　 しーJ\n");
-    }else if(player->sinka == 2 && player->inteli>=60 && player->health<60){
+    }else if(player->sinka == 2 && player->intelli>=60 && player->health<60){
       printf("あ，アイツ同窓会誘うの忘れてたEND\n");
       printf("      ハ,,ハ\n");
       printf("    （ ゜ω゜ ) お断りします\n");
@@ -144,7 +145,7 @@ void final_judge(status *player)
       printf("    （＿⌒ヽ\n");
       printf("     ヽ ヘ  }\n");
       printf("ε≡Ξ ノノ ｀J\n");
-    }else if(player->sinka == 2 && player->inteli>=60 && player->health>=60 && player->inteli<80 && player->health<80){
+    }else if(player->sinka == 2 && player->intelli>=60 && player->health>=60 && player->intelli<80 && player->health<80){
       printf("大学進学おめでとうEND\n");
       printf("          ∧__∧\n");
       printf("        （｀・ω・）\n");
@@ -152,14 +153,14 @@ void final_judge(status *player)
       printf("      ヽ,,ノ==l ノ\n");
       printf("          / l |\n");
       printf("／／／／／／／／／／／／\n");
-    }else if(player->sinka == 1 && player->inteli>=60 && player->health>=60 && player->inteli<80 && player->health<80){
+    }else if(player->sinka == 1 && player->intelli>=60 && player->health>=60 && player->intelli<80 && player->health<80){
       printf("就職決まっておめでとうEND\n");
       printf("　　　　　∧__∧∧∧∧∧∧\n");
       printf("　　　　 (・ω・` )┐┐┐┐┐┐\n");
       printf("　　　　　と´_,ノ゛ヾ.ヾヾ.ヾヾ.ヾヾ.ヾ\n");
       printf("　　　　 　 (´ ヽ、 ＼＼＼＼＼＼＼\n");
       printf("　　　 　 　 ｀ー'　＼__）__）__）_）__）_）__） \n");
-    }else if(player->sinka == 1 && (player->inteli>=80 || player->health>=80)){
+    }else if(player->sinka == 1 && (player->intelli>=80 || player->health>=80)){
       printf("一時期は荒れて留年したが今では立派なベンチャー企業の社長END\n");
       printf("　　　　　　　　*'``・* 。\n");
       printf("　　　　　　　　|　　　　 `*。\n");
@@ -169,7 +170,7 @@ void final_judge(status *player)
       printf("　　　　　　　`・+。*・' ゜⊃ +゜\n");
       printf("　　　　　　　☆　　 ∪~ 。*゜\n");
       printf("　 　　　　　　`・+。*・ ゜\n");
-    }else if(player-sinka == 2 && (player->inteli>=80 || player->health>=80)){
+    }else if(player->sinka == 2 && (player->intelli>=80 || player->health>=80)){
       printf("一時期は荒れて留年したが今では立派なベンチャー企業の社長END\n");
       printf("　　　　　　　　*'``・* 。\n");
       printf("　　　　　　　　|　　　　 `*。\n");

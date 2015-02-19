@@ -11,8 +11,11 @@ typedef struct status {
   int sinka;
 } status;
 
-int delete_nl(char *str);
 int input_data(const char* filename, status* data);
 int output_data(const char* filename, status data);
+
+//PRIVATE
+int _delete_nl(char *str);
+void _itoa (int n,char *s);
 
 #endif
