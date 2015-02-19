@@ -15,10 +15,7 @@ int bakudan_main() {
   unsigned char data[1024];
 
   init_bakudan(&game);
-  send_name(game, (unsigned char*)"testkun");
-  get_player_num(&game);
-  get_name(&game);
-  printf("%d\n", game.my_player_num);
+  //printf("%d\n", game.my_player_num);
 
   for(; game.player_num > 1;) {
     puts("get_cmd");
@@ -27,6 +24,7 @@ int bakudan_main() {
     printf("%s", data);
     switch(data[0] - '0') {
     case 0:
+      get_data(&data);
       break;
     case 1:
       get_name(&game);
