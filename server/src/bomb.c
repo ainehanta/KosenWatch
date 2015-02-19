@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>  /* #include < sys/un.h >の代わり */
 
 // メインループ
 int bakudan_main() {
@@ -137,6 +140,7 @@ void get_data(char data[], int num) {
 
 int get_input_data(int num) {
   char data[3];
+  send_data("9", num);
   get_data(data, num);
   return (int)(data[1] - '0');
 }
@@ -145,6 +149,7 @@ int get_input_data(int num) {
 // プレイヤー名の最後に'\0'が入ってないと多分ヤバい
 void get_name(bakudan* game, int num) {
   unsigned char data[DEFAULT_PLAYER_NUM+2];
+  send_data("8", num);
   get_data(data, num);
   strcpy(game->name[num], &data[1]);
 }
@@ -231,6 +236,7 @@ int send_init_data(bakudan game) {
 
   for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
     printf("[SEND] sending init data to player %d %s\n", i, game.name[i]);
+    send_data("2", i);
     send_data(data, i);
   }
 }
@@ -253,6 +259,7 @@ void send_is_dropped(bakudan game) {
     printf("[SEND] is_dropped and exploded place to player %d %s\n", i, game.name[i]);
     printf("=============%d\n", game.dropout[i]);
     data[1] = game.dropout[i] + '0';
+    send_data("6", i);
     send_data(data, i);
   }
 
@@ -274,6 +281,7 @@ void send_player_name(bakudan game) {
   strcat(data, camma);
   for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
     printf("[SEND] sending all player name to player %d %s\n", i, game.name[i]);
+    send_data("1", i);
     send_data(data, i);
   }
 }
@@ -293,6 +301,7 @@ int send_player_num(bakudan game) {
   for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
     printf("[SEND] sending player_num to player %d %s\n", i, game.name[i]);
     data[1] = i + '0';
+    send_data("0", i);
     send_data(data, i);
   }
 }
@@ -308,6 +317,7 @@ void send_winner(bakudan game) {
   data[1] = game.order[0] + '0';
   data[2] = '\0';
   for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
+    send_data("7", i);
     printf("[SEND] sending winner to player %d %s n", i, game.name[i]);
     send_data(data, i);
   }
@@ -327,6 +337,7 @@ void send_your_order(bakudan game, int num) {
   data[6] = '\0';
   for(i = 0; i < DEFAULT_PLAYER_NUM; i++) {
     printf("[SEND] sending \"now your turn\" to player %d %s\n", i, game.name[i]);
+    send_data("3", i);
     send_data(data, i);
   }
 }
