@@ -2,134 +2,134 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define ACARD 53  //%4=¥Ş¡¼¥¯ /4=¿ô»ú
-#define PLACARD 20    //¥×¥ì¥¤¥ä¡¼¤¬»ı¤Æ¤ë¥«¡¼¥É¤ÎºÇÂç¿ô
-#define APL 3       //¥×¥ì¥¤¥ä¡¼¤ÎºÇÂç¿Í¿ô
+#define ACARD 53  //%4=ãƒãƒ¼ã‚¯ /4=æ•°å­—
+#define PLACARD 20    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæŒã¦ã‚‹ã‚«ãƒ¼ãƒ‰ã®æœ€å¤§æ•°
+#define APL 3       //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æœ€å¤§äººæ•°
 
-void init(int playre[][PLACARD],int pmax[],int card[],char rank[]);    //½é´ü²½  ¥µ¡¼¥Ğ¡¼Â¦
-void disp(int playre[][PLACARD]);       //¤¹¤Ù¤Æ¤Î¥«¡¼¥ÉÉ½¼¨¡Ê¥Ç¥Ğ¥Ã¥°ÍÑ¡Ë
-void disp_pl(int playre[][PLACARD],int p,int pmax[]);    //ÆÃÄê¤Î¥×¥ì¥¤¥ä¡¼¤Î¥«¡¼¥É¤Î¤ßÉ½¼¨¡¥¤½¤ì°Ê³°¤Ï*¤ÇÉ½¼¨  ¥¯¥é¥¤¥¢¥ó¥ÈÂ¦
-void del_card(int playre[][PLACARD],int card[],int pmax[]);    //¥Ú¥¢¤Ë¤Ê¤Ã¤¿¥«¡¼¥É¤Î¾Ãµî  ¥µ¡¼¥Ğ¡¼Â¦
-void workcard(int playre[][PLACARD],int card[],int pmax[],char rank[],int *i,int *j,char *n);    //¥«¡¼¥ÉÁ´ÈÌ½èÍı   ¥µ¡¼¥Ğ¡¼Â¦
-void reset_card(int playre[][PLACARD],int i,int pmax[]);    //¥«¡¼¥ÉÀ°Íı  ¥µ¡¼¥Ğ¡¼Â¦
-void game(int playre[][PLACARD],int card[],int pmax[],char rank[]);    //¥²¡¼¥àÉôÊ¬  ¥µ¡¼¥Ğ¡¼Â¦¡©
-void resurt(char rank[]);    //½ç°ÌÈ¯É½  ¥¯¥é¥¤¥¢¥ó¥ÈÂ¦
-void getscan(char *n,int pmax[],int j);     //ÆşÎÏ  ²¾
-void debug_disp(int playre[][PLACARD],char rank[]);     //¥Ç¥Ğ¥Ã¥°ÍÑ¡¥Ãæ¿È¤ò¤¹¤Ù¤ÆÉ½¼¨
-char flagck(int playre[][PLACARD],int i);    //¾å¤¬¤ê¥Õ¥é¥°¥Á¥§¥Ã¥¯  ¥µ¡¼¥Ğ¡¼Â¦
+void init(int playre[][PLACARD],int pmax[],int card[],char rank[]);    //åˆæœŸåŒ–  ã‚µãƒ¼ãƒãƒ¼å´
+void disp(int playre[][PLACARD]);       //ã™ã¹ã¦ã®ã‚«ãƒ¼ãƒ‰è¡¨ç¤ºï¼ˆãƒ‡ãƒãƒƒã‚°ç”¨ï¼‰
+void disp_pl(int playre[][PLACARD],int p,int pmax[]);    //ç‰¹å®šã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚«ãƒ¼ãƒ‰ã®ã¿è¡¨ç¤ºï¼ãã‚Œä»¥å¤–ã¯*ã§è¡¨ç¤º  ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆå´
+void del_card(int playre[][PLACARD],int card[],int pmax[]);    //ãƒšã‚¢ã«ãªã£ãŸã‚«ãƒ¼ãƒ‰ã®æ¶ˆå»  ã‚µãƒ¼ãƒãƒ¼å´
+void workcard(int playre[][PLACARD],int card[],int pmax[],char rank[],int *i,int *j,char *n);    //ã‚«ãƒ¼ãƒ‰å…¨èˆ¬å‡¦ç†   ã‚µãƒ¼ãƒãƒ¼å´
+void reset_card(int playre[][PLACARD],int i,int pmax[]);    //ã‚«ãƒ¼ãƒ‰æ•´ç†  ã‚µãƒ¼ãƒãƒ¼å´
+void game(int playre[][PLACARD],int card[],int pmax[],char rank[]);    //ã‚²ãƒ¼ãƒ éƒ¨åˆ†  ã‚µãƒ¼ãƒãƒ¼å´ï¼Ÿ
+void resurt(char rank[]);    //é †ä½ç™ºè¡¨  ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆå´
+void getscan(char *n,int pmax[],int j);     //å…¥åŠ›  ä»®
+void debug_disp(int playre[][PLACARD],char rank[]);     //ãƒ‡ãƒãƒƒã‚°ç”¨ï¼ä¸­èº«ã‚’ã™ã¹ã¦è¡¨ç¤º
+char flagck(int playre[][PLACARD],int i);    //ä¸ŠãŒã‚Šãƒ•ãƒ©ã‚°ãƒã‚§ãƒƒã‚¯  ã‚µãƒ¼ãƒãƒ¼å´
 
 int main(void){
-  int card[ACARD];    //¥«¡¼¥É¤òÇÛ¤ë¤È¤­¤Î¤¿¤á¤ÎÇÛÎó  ¥µ¡¼¥Ğ¡¼Â¦
-  int playre[APL][PLACARD];    //¥×¥ì¥¤¥ä¡¼¤¬¤½¤ì¤¾¤ì»ı¤Ä¥«¡¼¥É³ÊÇ¼ -1¡á²¿¤â¤Ê¤·  ¥µ¡¼¥Ğ¡¼Â¦
-  int pmax[APL];   //¤½¤Î¥×¥ì¥¤¥ä¡¼¤¬»ı¤Ä¥«¡¼¥É¤ÎËç¿ô  ¥µ¡¼¥Ğ¡¼Â¦
-  char rank[APL];   //½ç°Ì³ÊÇ¼  ¥µ¡¼¥Ğ¡¼Â¦ 
+  int card[ACARD];    //ã‚«ãƒ¼ãƒ‰ã‚’é…ã‚‹ã¨ãã®ãŸã‚ã®é…åˆ—  ã‚µãƒ¼ãƒãƒ¼å´
+  int playre[APL][PLACARD];    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒãã‚Œãã‚ŒæŒã¤ã‚«ãƒ¼ãƒ‰æ ¼ç´ -1ï¼ä½•ã‚‚ãªã—  ã‚µãƒ¼ãƒãƒ¼å´
+  int pmax[APL];   //ãã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæŒã¤ã‚«ãƒ¼ãƒ‰ã®æšæ•°  ã‚µãƒ¼ãƒãƒ¼å´
+  char rank[APL];   //é †ä½æ ¼ç´  ã‚µãƒ¼ãƒãƒ¼å´
   srand((unsigned)time(NULL));
   init(playre,pmax,card,rank);
   game(playre,card,pmax,rank);
   resurt(rank);
 }
 
-void disp(int playre[][PLACARD])      //¥Ç¥Ğ¥Ã¥°ÍÑ
+void disp(int playre[][PLACARD])      //ãƒ‡ãƒãƒƒã‚°ç”¨
 {
   int i,j,h;
   for(i=0;i<APL;i++){
-    printf("\n¥×¥ì¥¤¥ä¡¼%d\n",i+1);
+    printf("\nãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼%d\n",i+1);
     for(j=0;j<PLACARD;j++){
       printf("|");
       h=playre[i][j]%4;
       if(playre[i][j]==52){
-	printf(" J");
+        printf(" J");
       }else{
-	switch(h){
-	case 0:
-	  printf(" #");
-	  break;
-	case 1:
-	  printf(" $");
-	  break;
-	case 2:
-	  printf(" %%");
-	  break;
-	case 3:
-	  printf(" &");
-	  break;
-	}
+        switch(h){
+          case 0:
+            printf(" #");
+            break;
+          case 1:
+            printf(" $");
+            break;
+          case 2:
+            printf(" %%");
+            break;
+          case 3:
+            printf(" &");
+            break;
+        }
       }if(playre[i][j+1]==-1){
-	break;
+        break;
       }
     }puts("|");
     for(j=0;j<PLACARD;j++){
       printf("|");
       h=playre[i][j]/4;
       if(h==13){
-	printf(" K");
+        printf(" K");
       }else{
-	printf("%2d",h+1);
+        printf("%2d",h+1);
       }
       if(playre[i][j+1]==-1){
-	break;
+        break;
       }
     }
     puts("|");
   }
 }
 
-void disp_pl(int playre[][PLACARD],int p,int pmax[])   //¥¯¥é¥¤¥¢¥ó¥È int p¤Ç»ØÄê¤·¤¿¥×¥ì¥¤¥ä¡¼¤Î¥«¡¼¥É¤Î¤ßÉ½¼¨¡¥¤½¤ì°Ê³°¤ÏÉú¤»¤ÆÉ½¼¨
+void disp_pl(int playre[][PLACARD],int p,int pmax[])   //ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆ int pã§æŒ‡å®šã—ãŸãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚«ãƒ¼ãƒ‰ã®ã¿è¡¨ç¤ºï¼ãã‚Œä»¥å¤–ã¯ä¼ã›ã¦è¡¨ç¤º
 {
-   int i,j,h;
+  int i,j,h;
   for(i=0;i<APL;i++){
-    printf("\n¥×¥ì¥¤¥ä¡¼%d\n",i+1);
-    if(pmax[i]==0){     //¥«¡¼¥É¤¬£°Ëç¤Ê¤é¤Ğ¥«¡¼¥É¤òÉ½¼¨¤·¤Ê¤¤
-      printf("¾å¤¬¤ê\n");
+    printf("\nãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼%d\n",i+1);
+    if(pmax[i]==0){     //ã‚«ãƒ¼ãƒ‰ãŒï¼æšãªã‚‰ã°ã‚«ãƒ¼ãƒ‰ã‚’è¡¨ç¤ºã—ãªã„
+      printf("ä¸ŠãŒã‚Š\n");
     }else{
       for(j=0;j<PLACARD;j++){
-	printf("|");
-	h=playre[i][j]%4;
-	if(p==i){
-	  if(playre[i][j]==52){
-	    printf(" J");        //¥¸¥ç¡¼¥«¡¼
-	  }else{
-	    switch(h){
-	    case 0:
-	      printf(" #");
-	      break;
-	    case 1:
-	      printf(" $");
-	      break;
-	    case 2:
-	      printf(" %%");
-	      break;
-	    case 3:
-	      printf(" &");
-	      break;
-	    }
-	  }
-	}else{
-	  printf(" *");
-	}if(playre[i][j+1]==-1){
-	  break;
-	}
+        printf("|");
+        h=playre[i][j]%4;
+        if(p==i){
+          if(playre[i][j]==52){
+            printf(" J");        //ã‚¸ãƒ§ãƒ¼ã‚«ãƒ¼
+          }else{
+            switch(h){
+              case 0:
+                printf(" #");
+                break;
+              case 1:
+                printf(" $");
+                break;
+              case 2:
+                printf(" %%");
+                break;
+              case 3:
+                printf(" &");
+                break;
+            }
+          }
+        }else{
+          printf(" *");
+        }if(playre[i][j+1]==-1){
+          break;
+        }
       }
       puts("|");
       for(j=0;j<PLACARD;j++){
-	printf("|");
-	h=playre[i][j]/4;
-	if(i==p){
-	  if(h==13){
-	    printf(" K");      //¥¸¥ç¡¼¥«¡¼
-	  }else{
-	    printf("%2d",h+1);
-	  }
-	  if(playre[i][j+1]==-1){
-	    break;
-	  }
-	}else{
-	  printf(" *");
-	  if(playre[i][j+1]==-1){
-	    break;
-	  }
-	}
-	
+        printf("|");
+        h=playre[i][j]/4;
+        if(i==p){
+          if(h==13){
+            printf(" K");      //ã‚¸ãƒ§ãƒ¼ã‚«ãƒ¼
+          }else{
+            printf("%2d",h+1);
+          }
+          if(playre[i][j+1]==-1){
+            break;
+          }
+        }else{
+          printf(" *");
+          if(playre[i][j+1]==-1){
+            break;
+          }
+        }
+
       }
       puts("|");
     }
@@ -137,28 +137,28 @@ void disp_pl(int playre[][PLACARD],int p,int pmax[])   //¥¯¥é¥¤¥¢¥ó¥È int p¤Ç»ØÄ
 }
 
 
-void del_card(int playre[][PLACARD],int card[],int pmax[])    //¥«¡¼¥É¾Ãµî¡¥
+void del_card(int playre[][PLACARD],int card[],int pmax[])    //ã‚«ãƒ¼ãƒ‰æ¶ˆå»ï¼
 {
   int i,j,k,l;
   for(i=0;i<APL;i++){
     for(j=0;j<=pmax[i];j++){
       if(playre[i][j]>=0){
-	for(k=j+1;k<=pmax[i];k++){
-	  if(playre[i][j]/4==playre[i][k]/4&&playre[i][k]>=0){    //¥«¡¼¥É¤Ë¥Ú¥¢¤¬¤¢¤Ã¤¿¤é¾Ã¤¹
-	    playre[i][j]=playre[i][k]=-2;
-	    card[playre[i][j]]=card[playre[i][k]]=4;
-	    break;
-	  }if(playre[i][k]==-1){
-	    break;
-	  }
-	}
+        for(k=j+1;k<=pmax[i];k++){
+          if(playre[i][j]/4==playre[i][k]/4&&playre[i][k]>=0){    //ã‚«ãƒ¼ãƒ‰ã«ãƒšã‚¢ãŒã‚ã£ãŸã‚‰æ¶ˆã™
+            playre[i][j]=playre[i][k]=-2;
+            card[playre[i][j]]=card[playre[i][k]]=4;
+            break;
+          }if(playre[i][k]==-1){
+            break;
+          }
+        }
       }
     }
     reset_card(playre,i,pmax);
   }
 }
 
-void reset_card(int playre[][PLACARD],int i,int pmax[]) //¥«¡¼¥É¤ÎÀ°Íı¡¥
+void reset_card(int playre[][PLACARD],int i,int pmax[]) //ã‚«ãƒ¼ãƒ‰ã®æ•´ç†ï¼
 {
   int j,l,k;
   l=0;
@@ -166,8 +166,8 @@ void reset_card(int playre[][PLACARD],int i,int pmax[]) //¥«¡¼¥É¤ÎÀ°Íı¡¥
   for(j=0;j<=PLACARD;j++){
     if(playre[i][j]>=0){
       if(l!=0){
-	playre[i][j-l]=playre[i][j];      //¥«¡¼¥É¤òº¸Ã¼¤ËµÍ¤á¤ë
-	playre[i][j-l+1]=-1;
+        playre[i][j-l]=playre[i][j];      //ã‚«ãƒ¼ãƒ‰ã‚’å·¦ç«¯ã«è©°ã‚ã‚‹
+        playre[i][j-l+1]=-1;
       }
     }else if(playre[i][j]==-2){
       l++;
@@ -181,8 +181,8 @@ void reset_card(int playre[][PLACARD],int i,int pmax[]) //¥«¡¼¥É¤ÎÀ°Íı¡¥
   }if(k==0){
     pmax[i]=0;
   }
-  
-  for(i=0;i<APL;i++){        //ºÇ¸åÈø¤Ë¥«¡¼¥É¤¬¤Ê¤¤¤³¤È¤ò¤Ä¤±¤ë
+
+  for(i=0;i<APL;i++){        //æœ€å¾Œå°¾ã«ã‚«ãƒ¼ãƒ‰ãŒãªã„ã“ã¨ã‚’ã¤ã‘ã‚‹
     for(j=pmax[i];j<PLACARD;j++){
       playre[i][j]=-1;
     }
@@ -190,35 +190,35 @@ void reset_card(int playre[][PLACARD],int i,int pmax[]) //¥«¡¼¥É¤ÎÀ°Íı¡¥
 }
 
 
-void game(int playre[][PLACARD],int card[],int pmax[],char rank[])   //¥²¡¼¥à¤Î´ğÁÃÉôÊ¬
+void game(int playre[][PLACARD],int card[],int pmax[],char rank[])   //ã‚²ãƒ¼ãƒ ã®åŸºç¤éƒ¨åˆ†
 {
   int i,j,k,l,m;
   char n;
   i=0;
   while(rank[1]==-1){
-    if(i!=rank[0]){        //¾å¤¬¤Ã¤¿ÅÛ¤ÎÈÖ¤Ï¥¹¥ë¡¼
+    if(i!=rank[0]){        //ä¸ŠãŒã£ãŸå¥´ã®ç•ªã¯ã‚¹ãƒ«ãƒ¼
       disp_pl(playre,i,pmax);
       j=i+1;
       j%=3;
       if(j==rank[0]){
-	j=i-1;
-	if(j<0){
-	  j=2;
-	}
+        j=i-1;
+        if(j<0){
+          j=2;
+        }
       }
-      printf("¥×¥ì¥¤¥ä¡¼%d¤ÎÈÖ¤Ç¤¹¡£\n¥×¥ì¥¤¥ä¡¼%d¤Îº¸¤«¤é²¿ÈÖÌÜ¤Î¥«¡¼¥É¤ò¼è¤ê¤Ş¤¹¤«?",(i+1),(j+1));
+      printf("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼%dã®ç•ªã§ã™ã€‚\nãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼%dã®å·¦ã‹ã‚‰ä½•ç•ªç›®ã®ã‚«ãƒ¼ãƒ‰ã‚’å–ã‚Šã¾ã™ã‹?",(i+1),(j+1));
       getscan(&n,pmax,j);
       j=i+1;
       j%=3;
       if(j==rank[0]){
-	j=i-1;
-	if(j<0){
-	  j=2;
-	}
+        j=i-1;
+        if(j<0){
+          j=2;
+        }
       }
-      
-      workcard(playre,card,pmax,rank,&i,&j,&n);    //¥«¡¼¥É¾ğÊó¤Î°ÜÆ°
-      
+
+      workcard(playre,card,pmax,rank,&i,&j,&n);    //ã‚«ãƒ¼ãƒ‰æƒ…å ±ã®ç§»å‹•
+
     }
     i++;
     if(i==3){
@@ -228,9 +228,9 @@ void game(int playre[][PLACARD],int card[],int pmax[],char rank[])   //¥²¡¼¥à¤Î´
 }
 
 
-void workcard(int playre[][PLACARD],int card[],int pmax[],char rank[],int *i,int *j,char *n)    //¥«¡¼¥ÉÀ°ÍıµÚ¤Ó½ç°Ì¥Á¥§¥Ã¥¯¤Ê¤É
+void workcard(int playre[][PLACARD],int card[],int pmax[],char rank[],int *i,int *j,char *n)    //ã‚«ãƒ¼ãƒ‰æ•´ç†åŠã³é †ä½ãƒã‚§ãƒƒã‚¯ãªã©
 {
-  playre[*i][pmax[*i]]=playre[*j][(*n)-1];    
+  playre[*i][pmax[*i]]=playre[*j][(*n)-1];
   pmax[*i]++;
   playre[*j][(*n)-1]=-2;
   //debug_disp(playre);
@@ -238,43 +238,43 @@ void workcard(int playre[][PLACARD],int card[],int pmax[],char rank[],int *i,int
   //debug_disp(playre);
   if(rank[0]==-1){
 
-    /*	if(flagck(playre,*i)==1&&flagck(playre,*j)==1){    //Ìµ¤¯¤Æ¤â¤è¤¤¤Ï¤º
-	rank[0]=*i;
-	rank[1]=*j;
-	}*/
+    /*	if(flagck(playre,*i)==1&&flagck(playre,*j)==1){    //ç„¡ãã¦ã‚‚ã‚ˆã„ã¯ãš
+        rank[0]=*i;
+        rank[1]=*j;
+        }*/
 
     if(flagck(playre,*i)==1){
       rank[0]=*i;
     }if(flagck(playre,*j)==1){
       if(rank[0]==-1){
-	rank[0]=*j;
+        rank[0]=*j;
       }else{
-	rank[1]=*j;
-	switch(*i){
-	case 0:
-	  if(*j==1){
-	    rank[2]=2;
-	  }else if(*j==2){
-	    rank[2]=1;
-	  }
-	  break;
-	case 1:
-	  if(*j==0){
-	    rank[2]=2;
-	  }else if(*j==2){
-	    rank[2]=0;
-	  }
-	  break;
-	case 2:
-	  if(*j==0){
-	    rank[2]==1;
-	  }else if(*j==1){
-	    rank[2]=0;
-	  }
-	  break;
-	defalt:
-	  break;
-	}
+        rank[1]=*j;
+        switch(*i){
+          case 0:
+            if(*j==1){
+              rank[2]=2;
+            }else if(*j==2){
+              rank[2]=1;
+            }
+            break;
+          case 1:
+            if(*j==0){
+              rank[2]=2;
+            }else if(*j==2){
+              rank[2]=0;
+            }
+            break;
+          case 2:
+            if(*j==0){
+              rank[2]==1;
+            }else if(*j==1){
+              rank[2]=0;
+            }
+            break;
+defalt:
+            break;
+        }
       }
     }
   }else{
@@ -289,11 +289,11 @@ void workcard(int playre[][PLACARD],int card[],int pmax[],char rank[],int *i,int
   }
 }
 
-  
+
 
 void resurt(char rank[])
 {
-  printf("°ì°Ì ¥×¥ì¥¤¥ä¡¼%d\nÆó°Ì ¥×¥ì¥¤¥ä¡¼%d\n»°°Ì ¥×¥ì¥¤¥ä¡¼%d\n",rank[0]+1,rank[1]+1,rank[2]+1);
+  printf("ä¸€ä½ ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼%d\näºŒä½ ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼%d\nä¸‰ä½ ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼%d\n",rank[0]+1,rank[1]+1,rank[2]+1);
 }
 
 
@@ -311,16 +311,16 @@ void debug_disp(int playre[][PLACARD],char rank[])
   printf("\n");
 }
 
-void getscan(char *n,int pmax[],int j)       //ÆşÎÏ
+void getscan(char *n,int pmax[],int j)       //å…¥åŠ›
 {
   scanf("%d",n);
   while(*n>pmax[j]||*n<1){
-    printf("ÉÔÀµ¤ÊÆşÎÏ¤Ç¤¹\n²¿ÈÖÌÜ¤Î¥«¡¼¥É¤ò¼è¤ê¤Ş¤¹¤«?");
+    printf("ä¸æ­£ãªå…¥åŠ›ã§ã™\nä½•ç•ªç›®ã®ã‚«ãƒ¼ãƒ‰ã‚’å–ã‚Šã¾ã™ã‹?");
     scanf("%d",n);
   }
 }
 
-char flagck(int playre[][PLACARD],int i)   //¾¡ÍøÈ½Äê
+char flagck(int playre[][PLACARD],int i)   //å‹åˆ©åˆ¤å®š
 {
   if(playre[i][0]<0){
     return 1;
@@ -329,10 +329,10 @@ char flagck(int playre[][PLACARD],int i)   //¾¡ÍøÈ½Äê
   }
 }
 
-void init(int playre[][PLACARD],int pmax[],int card[],char rank[])   //½é´ü²½
+void init(int playre[][PLACARD],int pmax[],int card[],char rank[])   //åˆæœŸåŒ–
 {
   int i,h,l,p,j,k;
-  for(i=0;i<ACARD;i++){     //ÇÛÎó½é´ü²½
+  for(i=0;i<ACARD;i++){     //é…åˆ—åˆæœŸåŒ–
     card[i]=0;
   }
   for(i=0;i<PLACARD;i++){
@@ -344,11 +344,11 @@ void init(int playre[][PLACARD],int pmax[],int card[],char rank[])   //½é´ü²½
   h=0;
   l=0;
   p=1;
-  for(i=0;i<ACARD;i++){      //¥«¡¼¥ÉÇÛ¤ê
+  for(i=0;i<ACARD;i++){      //ã‚«ãƒ¼ãƒ‰é…ã‚Š
     j=rand()%(ACARD-l);
     for(k=0;j!=-1;k++){
       if(card[k]==0){
-	j--;
+        j--;
       }
     }
     card[k-1]=p;
