@@ -8,6 +8,8 @@
 
 int main(void)
 {
+  //int winner = bakudan_main();
+
   status player;
 
   int action = 0;
