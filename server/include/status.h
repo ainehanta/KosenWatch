@@ -3,7 +3,7 @@
 #define INCLUDED_STATUS
 #define MAX_NAME_LENGTH 10
 
-typedef struct {
+typedef struct status {
   int health;
   int intelli;
   int turn;
@@ -11,9 +11,8 @@ typedef struct {
   int sinka;
 } status;
 
-char** get_status_file_list(void);
 int input_data(const char* filename, status* data);
-int output_data(const char* filename, status* data);
+int output_data(const char* filename, status data);
 
 //PRIVATE
 int _delete_nl(char *str);
