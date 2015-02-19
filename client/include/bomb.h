@@ -54,4 +54,3 @@ void send_input(bakudan game, unsigned char input);
 void send_name(bakudan game, unsigned char name[]);
 
 #endif
-
