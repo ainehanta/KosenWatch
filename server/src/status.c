@@ -19,7 +19,7 @@ int input_data(const char* filename, status* data) {
     printf("[Error] : file reading error.\n");
     return 1;
   } else {
-    _delete_nl(ch);
+    delete_nl(ch);
     strcpy(data->name, ch);
   }
 
@@ -58,24 +58,24 @@ int input_data(const char* filename, status* data) {
   return 0;
 }
 
-int output_data(const char* filename, status* data) {
+int output_data(const char* filename, status data) {
   FILE *fp;
   char str[10];
 
   fp = fopen(filename, "w");
 
-  fputs(data->name, fp);
+  fputs(data.name, fp);
   fputc('\n', fp);
-  _itoa(data->health, str);
+  itoa(data.health, str);
   fputs(str, fp);
   fputc('\n', fp);
-  _itoa(data->intelli, str);
+  itoa(data.intelli, str);
   fputs(str, fp);
   fputc('\n', fp);
-  _itoa(data->turn, str);
+  itoa(data.turn, str);
   fputs(str, fp);
   fputc('\n', fp);
-  _itoa(data->sinka, str);
+  itoa(data.sinka, str);
   fputs(str, fp);
   fputc('\n', fp);
 
@@ -100,7 +100,7 @@ void _itoa (int n,char *s) {
     int i = 0;
     int l = n;
     while( l /= 10) i++;
-    _itoa(n/10, s);
+    itoa(n/10, s);
     s[i] = n % 10 + '0';
     s[i+1] = '\0';
   }
